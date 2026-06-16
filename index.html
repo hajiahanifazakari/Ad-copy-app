@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarketMate AI - Create Better Marketing in Minutes</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen pb-20 md:pb-0 md:pl-64">
 
     <div id="onboardingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transition-all transform scale-100">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transition-all">
             <div class="flex items-center justify-between mb-6">
                 <span class="text-sm font-semibold text-indigo-600 uppercase tracking-wider" id="stepIndicator">Step 1 of 3</span>
                 <div class="flex gap-1.5" id="stepDots">
@@ -22,75 +21,73 @@
                 </div>
             </div>
 
-            <form id="onboardingForm" onsubmit="handleOnboardingSubmit(event)">
-                <div id="wizardStep1" class="space-y-4">
-                    <h2 class="text-2xl font-bold text-gray-900">Tell us about your brand</h2>
-                    <p class="text-gray-500 text-sm">We'll train your personalized MarketMate AI using these details.</p>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Business Name</label>
-                        <input type="text" id="bizName" required placeholder="e.g., Sweet Bloom Bakery" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Industry / Niche</label>
-                        <select id="bizIndustry" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                            <option>Food & Beverage</option>
-                            <option>E-commerce & Retail</option>
-                            <option>Real Estate</option>
-                            <option>SaaS & Tech Startup</option>
-                            <option>Health & Wellness</option>
-                            <option>Freelancer / Creator</option>
-                        </select>
-                    </div>
+            <div id="wizardStep1" class="space-y-4">
+                <h2 class="text-2xl font-bold text-gray-900">Tell us about your brand</h2>
+                <p class="text-gray-500 text-sm">We'll train your personalized MarketMate AI using these details.</p>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Business Name</label>
+                    <input type="text" id="bizName" placeholder="e.g., Sweet Bloom Bakery" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
                 </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Industry / Niche</label>
+                    <select id="bizIndustry" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        <option>Food & Beverage</option>
+                        <option>E-commerce & Retail</option>
+                        <option>Real Estate</option>
+                        <option>SaaS & Tech Startup</option>
+                        <option>Health & Wellness</option>
+                        <option>Freelancer / Creator</option>
+                    </select>
+                </div>
+            </div>
 
-                <div id="wizardStep2" class="space-y-4 hidden">
-                    <h2 class="text-2xl font-bold text-gray-900">Who are we talking to?</h2>
-                    <p class="text-gray-500 text-sm">Define your target demographic and personality flavor profiles.</p>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Target Audience</label>
-                        <input type="text" id="bizAudience" placeholder="e.g., Busy local moms, Gen-Z foodies" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Brand Voice Tone</label>
-                        <select id="bizTone" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                            <option>Witty & Energetic</option>
-                            <option>Professional & Authoritative</option>
-                            <option>Empathetic & Warm</option>
-                            <option>Minimalist & Luxury</option>
-                        </select>
-                    </div>
+            <div id="wizardStep2" class="space-y-4 hidden">
+                <h2 class="text-2xl font-bold text-gray-900">Who are we talking to?</h2>
+                <p class="text-gray-500 text-sm">Define your target demographic and personality flavor profiles.</p>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Target Audience</label>
+                    <input type="text" id="bizAudience" placeholder="e.g., Busy local moms, Gen-Z foodies" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
                 </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Brand Voice Tone</label>
+                    <select id="bizTone" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                        <option>Witty & Energetic</option>
+                        <option>Professional & Authoritative</option>
+                        <option>Empathetic & Warm</option>
+                        <option>Minimalist & Luxury</option>
+                    </select>
+                </div>
+            </div>
 
-                <div id="wizardStep3" class="space-y-4 hidden">
-                    <h2 class="text-2xl font-bold text-gray-900">What's your primary goal?</h2>
-                    <p class="text-gray-500 text-sm">Choose what areas you want to hyper-optimize first.</p>
-                    <div class="grid grid-cols-1 gap-2.5">
-                        <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition checked:border-indigo-600">
-                            <input type="radio" name="bizGoal" value="Social Growth" checked class="text-indigo-600 focus:ring-indigo-500">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900">Grow Social Channels</p>
-                                <p class="text-xs text-gray-500">Captions, tracking calendars & consistent layouts</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
-                            <input type="radio" name="bizGoal" value="Lead Conversion" class="text-indigo-600 focus:ring-indigo-500">
-                            <div>
-                                <p class="text-sm font-semibold text-gray-900">Convert Cold Leads</p>
-                                <p class="text-xs text-gray-500">High-converting ads copy, sales flyers & email copy</p>
-                            </div>
-                        </label>
-                    </div>
+            <div id="wizardStep3" class="space-y-4 hidden">
+                <h2 class="text-2xl font-bold text-gray-900">What's your primary goal?</h2>
+                <p class="text-gray-500 text-sm">Choose what areas you want to hyper-optimize first.</p>
+                <div class="grid grid-cols-1 gap-2.5">
+                    <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
+                        <input type="radio" name="bizGoal" value="Social Growth" checked class="text-indigo-600 focus:ring-indigo-500">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900">Grow Social Channels</p>
+                            <p class="text-xs text-gray-500">Captions, tracking calendars & consistent layouts</p>
+                        </div>
+                    </label>
+                    <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
+                        <input type="radio" name="bizGoal" value="Lead Conversion" class="text-indigo-600 focus:ring-indigo-500">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-900">Convert Cold Leads</p>
+                            <p class="text-xs text-gray-500">High-converting ads copy, sales flyers & email copy</p>
+                        </div>
+                    </label>
                 </div>
+            </div>
 
-                <div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-100 gap-3">
-                    <button type="button" id="prevStepBtn" onclick="navigateWizard(-1)" class="px-5 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50 transition invisible">
-                        Back
-                    </button>
-                    <button type="button" id="nextStepBtn" onclick="navigateWizard(1)" class="flex-1 bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-                        Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
-                </div>
-            </form>
+            <div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-100 gap-3">
+                <button type="button" id="prevStepBtn" onclick="navigateWizard(-1)" class="px-5 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50 transition invisible">
+                    Back
+                </button>
+                <button type="button" id="nextStepBtn" onclick="navigateWizard(1)" class="flex-1 bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2">
+                    Next Step →
+                </button>
+            </div>
         </div>
     </div>
 
@@ -107,22 +104,22 @@
 
             <nav class="space-y-1">
                 <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition bg-indigo-50 text-indigo-600">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4"></i> Dashboard
+                    Dashboard
                 </button>
                 <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    <i data-lucide="sparkles" class="w-4 h-4"></i> AI Content Creator
+                    AI Content Creator
                 </button>
                 <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    <i data-lucide="palette" class="w-4 h-4"></i> Design Studio
+                    Design Studio
                 </button>
                 <button onclick="switchTab('assistant')" data-tab="assistant" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    <i data-lucide="brain-circuit" class="w-4 h-4"></i> Strategy Assistant
+                    Strategy Assistant
                 </button>
                 <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    <i data-lucide="calendar" class="w-4 h-4"></i> Content Calendar
+                    Content Calendar
                 </button>
                 <button onclick="switchTab('brandkit')" data-tab="brandkit" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    <i data-lucide="briefcase" class="w-4 h-4"></i> Brand Kit
+                    Brand Kit
                 </button>
             </nav>
         </div>
@@ -139,23 +136,18 @@
 
     <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 px-2 py-1 flex justify-around shadow-lg">
         <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-indigo-600">
-            <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
             <span class="text-[10px] font-medium">Home</span>
         </button>
         <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <i data-lucide="sparkles" class="w-5 h-5"></i>
             <span class="text-[10px] font-medium">Create</span>
         </button>
         <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <i data-lucide="palette" class="w-5 h-5"></i>
             <span class="text-[10px] font-medium">Design</span>
         </button>
         <button onclick="switchTab('assistant')" data-tab="assistant" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <i data-lucide="brain-circuit" class="w-5 h-5"></i>
             <span class="text-[10px] font-medium">Strategy</span>
         </button>
         <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <i data-lucide="calendar" class="w-5 h-5"></i>
             <span class="text-[10px] font-medium">Plan</span>
         </button>
     </nav>
@@ -170,24 +162,23 @@
             </div>
             <div class="flex items-center gap-2">
                 <span class="text-xs font-semibold px-2.5 py-1 bg-violet-100 text-violet-700 rounded-full flex items-center gap-1">
-                    <i data-lucide="zap" class="w-3 h-3 fill-violet-700"></i> Pro Engine Active
+                    Pro Engine Active
                 </span>
                 <button onclick="openOnboarding()" class="p-2 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 text-gray-600 transition" title="Re-tune Brand Profiles">
-                    <i data-lucide="sliders" class="w-4 h-4"></i>
+                    ⚙️
                 </button>
             </div>
         </header>
 
         <section id="view-dashboard" class="tab-view space-y-6">
             <div class="bg-gradient-to-r from-indigo-900 to-slate-900 rounded-2xl p-5 md:p-6 text-white shadow-xl relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-indigo-500/10 rounded-full blur-2xl"></div>
                 <div class="relative z-10 max-w-xl space-y-3">
                     <span class="text-[11px] uppercase tracking-widest font-bold text-indigo-300">Omni-Channel Content Generator</span>
                     <h2 class="text-xl md:text-2xl font-bold tracking-tight">What are we marketing today?</h2>
                     <div class="flex flex-col sm:flex-row gap-2 bg-white/10 p-1.5 backdrop-blur-md rounded-xl border border-white/10">
                         <input type="text" id="omniPrompt" placeholder="Describe a campaign, product drop, or flash sale offer..." class="bg-transparent text-white placeholder-slate-400 px-3 py-2.5 focus:outline-none flex-1 text-sm">
-                        <button onclick="handleOmniGenerate()" class="bg-indigo-600 hover:bg-indigo-500 font-semibold text-sm text-white px-5 py-2.5 rounded-lg transition shadow-md whitespace-nowrap flex items-center justify-center gap-1.5">
-                            Generate Magic <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        <button onclick="handleOmniGenerate()" class="bg-indigo-600 hover:bg-indigo-500 font-semibold text-sm text-white px-5 py-2.5 rounded-lg transition shadow-md whitespace-nowrap">
+                            Generate Magic ✨
                         </button>
                     </div>
                 </div>
@@ -195,21 +186,21 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center"><i data-lucide="trending-up" class="w-5 h-5"></i></div>
+                    <div class="text-xl">📈</div>
                     <div>
                         <span class="text-xs text-gray-400 font-medium block">Avg Engagement Rate</span>
                         <span class="text-lg font-bold text-gray-800">4.82%</span>
                     </div>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center"><i data-lucide="layers" class="w-5 h-5"></i></div>
+                    <div class="text-xl">📦</div>
                     <div>
                         <span class="text-xs text-gray-400 font-medium block">Assets Generated</span>
                         <span class="text-lg font-bold text-gray-800" id="dashAssetCount">0 Assets</span>
                     </div>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4 md:col-span-1">
-                    <div class="w-10 h-10 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center"><i data-lucide="lightbulb" class="w-5 h-5"></i></div>
+                    <div class="text-xl">💡</div>
                     <div class="flex-1 truncate">
                         <span class="text-xs text-gray-400 font-medium block">Daily Optimization Tip</span>
                         <span class="text-sm font-medium text-gray-800 block truncate" id="rotatingTip">Post at 6:00 PM for optimal reach.</span>
@@ -222,7 +213,7 @@
                     <h3 class="font-bold text-gray-800 text-lg">Your Workspace Vault</h3>
                 </div>
                 <div id="vaultEmptyState" class="bg-white rounded-xl p-8 border border-dashed border-gray-200 flex flex-col items-center justify-center text-center space-y-3">
-                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400"><i data-lucide="folder-open" class="w-6 h-6"></i></div>
+                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400">📂</div>
                     <div>
                         <h4 class="font-semibold text-gray-800 text-sm">Your generation library is clear</h4>
                         <p class="text-xs text-gray-400 max-w-xs mt-0.5">Use our core features below or the generation prompt bar above to spin up automated marketing vectors.</p>
@@ -239,7 +230,7 @@
                     <h3 class="font-bold text-gray-800 text-lg">Content Factory</h3>
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Asset Typology</label>
-                        <select id="creatorType" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <select id="creatorType" onchange="updateCreatorOptions()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             <option value="Social Media Caption">Social Media Caption</option>
                             <option value="Product Description">Product Description</option>
                             <option value="Email Newsletter">Email Newsletter Narrative</option>
@@ -247,12 +238,22 @@
                             <option value="High-Density Hashtags">High-Density Hashtags Bundle</option>
                         </select>
                     </div>
+                    <div id="captionStyleSection" class="hidden">
+                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Caption Style</label>
+                        <select id="captionStyle" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="mixed">Mixed (All Types)</option>
+                            <option value="promotional">Promotional 🔥</option>
+                            <option value="educational">Educational 💡</option>
+                            <option value="engagement">Engagement 💬</option>
+                            <option value="sales">Sales Focused 💰</option>
+                        </select>
+                    </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Specific Context Parameters</label>
                         <textarea id="creatorPrompt" rows="4" placeholder="e.g., Launching our low-carb raspberry croissant line this coming Saturday morning with free samples for first 50 guests..." class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                     </div>
                     <button onclick="generateTextContent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-md shadow-indigo-100">
-                        Assemble Asset Layout <i data-lucide="sparkles" class="w-4 h-4"></i>
+                        Assemble Asset Layout ✨
                     </button>
                 </div>
 
@@ -260,7 +261,7 @@
                     <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Live AI Output Ledger</span>
                     <div class="bg-white rounded-xl border border-gray-100 p-6 min-h-[280px] flex flex-col justify-between relative shadow-sm" id="creatorOutputBox">
                         <div id="creatorOutputEmpty" class="my-auto text-center space-y-2">
-                            <i data-lucide="cpu" class="w-8 h-8 text-indigo-300 mx-auto"></i>
+                            <div class="text-2xl">🤖</div>
                             <p class="text-sm text-gray-400">Provide parameters on the left pane and run the layout generation framework.</p>
                         </div>
                         <div id="creatorOutputLoader" class="hidden absolute inset-6 space-y-4">
@@ -272,13 +273,18 @@
                             </div>
                         </div>
                         <div id="creatorOutputContainer" class="hidden space-y-4 text-gray-700 text-sm whitespace-pre-wrap leading-relaxed"></div>
-                        <div id="creatorActionRow" class="hidden flex items-center justify-end gap-2 border-t border-gray-50 pt-4 mt-4">
-                            <button onclick="copyToClipboard('creatorOutputContainer')" class="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-500 flex items-center gap-1.5 text-xs transition font-medium">
-                                <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Material
+                        <div id="creatorActionRow" class="hidden flex items-center justify-between gap-2 border-t border-gray-50 pt-4 mt-4">
+                            <button onclick="regenerateContent()" class="text-xs font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200 rounded-lg px-3 py-2 hover:bg-indigo-50 transition flex items-center gap-1.5">
+                                🔄 Regenerate
                             </button>
-                            <button onclick="saveCurrentTextAsset()" class="bg-slate-900 text-white px-3 py-2 rounded-lg hover:bg-slate-800 flex items-center gap-1.5 text-xs transition font-medium">
-                                <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Vault Asset
-                            </button>
+                            <div class="flex gap-2">
+                                <button onclick="copyToClipboard('creatorOutputContainer')" class="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-500 flex items-center gap-1.5 text-xs transition font-medium">
+                                    📋 Copy Material
+                                </button>
+                                <button onclick="saveCurrentTextAsset()" class="bg-slate-900 text-white px-3 py-2 rounded-lg hover:bg-slate-800 flex items-center gap-1.5 text-xs transition font-medium">
+                                    💾 Vault Asset
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -317,6 +323,94 @@
                             <button onclick="generateFlyerBackground()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-2 rounded-xl font-medium transition whitespace-nowrap">Inject Vector</button>
                         </div>
                     </div>
+                    
+                    <div class="space-y-4 border-t border-gray-100 pt-4">
+                        <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700">🎨 Advanced Design Studio</h4>
+                        
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Background Color</label>
+                                <input type="color" id="bgColorPicker" value="#4F46E5" onchange="updateFlyerStyle('bgColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Accent Color</label>
+                                <input type="color" id="accentColorPicker" value="#FFFFFF" onchange="updateFlyerStyle('accentColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Gradient Mode</label>
+                            <select id="gradientMode" onchange="updateFlyerStyle('gradientMode', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="solid">Solid Color</option>
+                                <option value="linear">Linear Gradient</option>
+                                <option value="radial">Radial Gradient</option>
+                                <option value="diagonal">Diagonal Gradient</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Background Opacity</label>
+                            <div class="flex gap-2 items-center">
+                                <input type="range" min="0" max="100" value="100" id="bgOpacity" onchange="updateFlyerStyle('bgOpacity', this.value)" class="flex-1">
+                                <span id="opacityValue" class="text-xs font-mono w-8 text-right">100%</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Text Color</label>
+                            <input type="color" id="textColorPicker" value="#FFFFFF" onchange="updateFlyerStyle('textColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Headline Font</label>
+                            <select id="headlineFont" onchange="updateFlyerStyle('headlineFont', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Arial">Arial Black</option>
+                                <option value="Georgia">Georgia Serif</option>
+                                <option value="Impact">Impact Heavy</option>
+                                <option value="Courier New">Courier Mono</option>
+                                <option value="Trebuchet MS">Trebuchet Modern</option>
+                                <option value="Comic Sans MS">Comic Bold</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Headline Size</label>
+                                <input type="range" min="20" max="50" value="32" id="headlineSize" onchange="updateFlyerStyle('headlineSize', this.value)" class="w-full">
+                                <span class="text-xs text-gray-500" id="headlineSizeValue">32px</span>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Element Spacing</label>
+                                <input type="range" min="0" max="30" value="15" id="elementSpacing" onchange="updateFlyerStyle('elementSpacing', this.value)" class="w-full">
+                                <span class="text-xs text-gray-500" id="spacingValue">15px</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Upload Background Image</label>
+                            <input type="file" accept="image/*" id="bgImageUpload" onchange="uploadFlyerImage(this)" class="w-full text-xs file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:cursor-pointer hover:file:bg-indigo-700 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Brand Logo</label>
+                            <input type="file" accept="image/*" id="logoUpload" onchange="uploadLogoImage(this)" class="w-full text-xs file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:cursor-pointer hover:file:bg-purple-700 transition">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Border Style</label>
+                            <select id="borderStyle" onchange="updateFlyerStyle('borderStyle', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="none">No Border</option>
+                                <option value="solid">Solid Border</option>
+                                <option value="dashed">Dashed Border</option>
+                                <option value="double">Double Border</option>
+                                <option value="rounded">Rounded Heavy</option>
+                            </select>
+                        </div>
+
+                        <button onclick="resetFlyerDesign()" class="w-full text-xs font-semibold py-2 px-3 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition">
+                            ↻ Reset to Default
+                        </button>
+                    </div>
                 </div>
 
                 <div class="lg:col-span-3 space-y-4">
@@ -345,10 +439,10 @@
 
                     <div class="flex items-center justify-center gap-3 max-w-[380px] mx-auto">
                         <button onclick="downloadFlyerAsset()" class="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold py-2.5 rounded-xl bg-white transition flex items-center justify-center gap-2 shadow-sm">
-                            <i data-lucide="download" class="w-4 h-4"></i> Export PNG Layer
+                            📥 Export PNG Layer
                         </button>
                         <button onclick="vaultFlyerAsset()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
-                            <i data-lucide="folder-heart" class="w-4 h-4"></i> Save Blueprint
+                            ❤️ Save Blueprint
                         </button>
                     </div>
                 </div>
@@ -357,22 +451,50 @@
 
 
         <section id="view-assistant" class="tab-view space-y-6 hidden">
-            <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm space-y-6">
-                <div>
-                    <h3 class="font-bold text-gray-800 text-lg">AI Brand Matrix Strategist</h3>
-                    <p class="text-xs text-gray-400">Deep-dive optimization frameworks aligned explicitly with your tracked business profile parameters.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
+                        <h3 class="font-bold text-gray-800 text-lg mb-2">📊 Marketing Intelligence Hub</h3>
+                        <p class="text-xs text-gray-400 mb-4">AI-powered insights tailored to your business goals and target audience</p>
+                        
+                        <div class="space-y-4" id="intelligenceInsights">
+                            <!-- Dynamically populated with insights -->
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="strategyCardGrid">
+                        <!-- Strategy cards will be dynamically added here -->
+                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="strategyCardGrid">
-                    <div class="border border-gray-100 rounded-xl p-4 bg-gray-50/50 space-y-2">
-                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">Growth Vectors</span>
-                        <h4 class="font-semibold text-gray-800 text-sm">Automated Micro-Influencer Funnels</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Leverage micro-audiences in the niche space by sending dynamic invitation packs matching your chosen voice tone profile.</p>
+                <div class="space-y-4">
+                    <div class="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl border border-indigo-100 p-5 shadow-sm">
+                        <h4 class="font-bold text-sm text-indigo-900 mb-3">🎯 Your Profile</h4>
+                        <div class="space-y-2 text-xs">
+                            <div>
+                                <span class="text-gray-600">Brand:</span>
+                                <span class="font-semibold text-gray-900" id="intelBrandName">Loading...</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Industry:</span>
+                                <span class="font-semibold text-gray-900" id="intelIndustry">Loading...</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Audience:</span>
+                                <span class="font-semibold text-gray-900" id="intelAudience">Loading...</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-600">Goal:</span>
+                                <span class="font-semibold text-gray-900" id="intelGoal">Loading...</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="border border-gray-100 rounded-xl p-4 bg-gray-50/50 space-y-2">
-                        <span class="text-[10px] font-bold text-violet-600 uppercase tracking-wider block">Market Arbitrage</span>
-                        <h4 class="font-semibold text-gray-800 text-sm">Competitive Value Contrast</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Emphasize tactical values over legacy operations. Structure content blocks emphasizing agility and personalized support matrixes.</p>
+
+                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-100 p-5 shadow-sm">
+                        <h4 class="font-bold text-sm text-amber-900 mb-3">💡 Quick Tips</h4>
+                        <div class="space-y-2" id="quickTips">
+                            <!-- Tips populated dynamically -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -380,24 +502,45 @@
 
 
         <section id="view-calendar" class="tab-view space-y-6 hidden">
-            <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <h3 class="font-bold text-gray-800 text-lg">Omni-Channel Content Calendar</h3>
-                        <p class="text-xs text-gray-400">Map execution deadlines and schedule generative content packages chronologically.</p>
+                        <h3 class="font-bold text-gray-800 text-lg">📅 Content Calendar</h3>
+                        <p class="text-xs text-gray-400">Plan and schedule your content across the full year</p>
                     </div>
-                    <div class="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl">
-                        <button class="bg-white px-3 py-1.5 text-xs font-semibold text-gray-800 rounded-lg shadow-sm">Monthly Matrix</button>
-                        <button class="text-gray-400 px-3 py-1.5 text-xs font-medium cursor-not-allowed">Weekly Micro</button>
+                    <div class="flex gap-2">
+                        <button onclick="previousMonth()" class="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-sm font-medium transition">← Prev</button>
+                        <button onclick="todayMonth()" class="px-4 py-2 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-200 text-sm font-medium transition">Today</button>
+                        <button onclick="nextMonth()" class="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-sm font-medium transition">Next →</button>
                     </div>
                 </div>
 
-                <div class="border border-gray-100 rounded-xl overflow-hidden">
-                    <div class="grid grid-cols-7 bg-gray-50 text-center py-2 text-xs font-bold uppercase tracking-wider text-gray-500 border-b border-gray-100">
-                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                    <h4 class="text-lg font-bold text-gray-800" id="calendarMonthYear">Loading...</h4>
+                    <select id="monthYearSelect" onchange="jumpToMonth(this.value)" class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <!-- Populated dynamically -->
+                    </select>
+                </div>
+
+                <div class="border border-gray-100 rounded-xl overflow-hidden bg-white">
+                    <div class="grid grid-cols-7 bg-gradient-to-r from-indigo-50 to-violet-50 text-center py-3 text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-100">
+                        <div>Sunday</div>
+                        <div>Monday</div>
+                        <div>Tuesday</div>
+                        <div>Wednesday</div>
+                        <div>Thursday</div>
+                        <div>Friday</div>
+                        <div>Saturday</div>
                     </div>
-                    <div class="grid grid-cols-7 grid-rows-5 h-80 md:h-[420px] bg-white divide-x divide-y divide-gray-100" id="calendarDaysGrid">
-                        </div>
+                    <div class="grid grid-cols-7 auto-rows-max bg-white divide-x divide-y divide-gray-100" id="calendarDaysGrid"></div>
+                </div>
+
+                <div id="selectedDateInfo" class="hidden bg-indigo-50 border border-indigo-200 rounded-xl p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="font-bold text-indigo-900" id="selectedDateTitle">Loading...</h4>
+                        <button onclick="closeSelectedDate()" class="text-indigo-600 hover:text-indigo-800 text-lg">✕</button>
+                    </div>
+                    <div id="selectedDateContent" class="space-y-2"></div>
                 </div>
             </div>
         </section>
@@ -406,36 +549,29 @@
         <section id="view-brandkit" class="tab-view space-y-6 hidden">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2"><i data-lucide="pipette" class="w-4 h-4 text-indigo-600"></i> Palette Archetypes</h4>
-                    <div class="space-y-2.5" id="kitColorContainer">
-                        </div>
+                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">🎨 Palette Archetypes</h4>
+                    <div class="space-y-2.5" id="kitColorContainer"></div>
                 </div>
 
                 <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2"><i data-lucide="type" class="w-4 h-4 text-violet-600"></i> Typography Pairings</h4>
+                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">🔤 Typography Pairings</h4>
                     <div class="p-4 border border-gray-50 rounded-xl space-y-3 bg-gray-50/30">
                         <div>
                             <span class="text-[10px] text-gray-400 font-bold uppercase block mb-1">Primary Display Header</span>
                             <p class="text-xl font-bold text-gray-900" id="kitFontHeader">Plus Jakarta Sans</p>
                         </div>
-                        <hr class="border-gray-100">
-                        <div>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase block mb-1">Body / Metadata Ledger</span>
-                            <p class="text-sm text-gray-600" id="kitFontBody">Inter / System Sans Variant</p>
-                        </div>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2"><i data-lucide="message-square-quote" class="w-4 h-4 text-amber-500"></i> Voice Tone Constraints</h4>
-                    <div class="space-y-2" id="kitVoiceContainer">
-                        </div>
+                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">💬 Voice Tone Constraints</h4>
+                    <div class="space-y-2" id="kitVoiceContainer"></div>
                 </div>
             </div>
         </section>
 
     </main>
 
-    <script src="script.js"></script>
+    <script src="app.js"></script>
 </body>
-</html>
+</html> 

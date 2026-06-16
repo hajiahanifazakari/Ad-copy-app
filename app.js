@@ -19,8 +19,10 @@ const tipsArray = [
 
 // --- CORE INIT EVENT BOUNDARY MOUNT ---
 document.addEventListener("DOMContentLoaded", () => {
-    // Render initial icons framework layout elements
-    lucide.createIcons();
+    // Safely execute Lucide if it loaded, otherwise fail gracefully
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
     initializeCalendarGrid();
     rotateMarketingTips();
     
@@ -44,6 +46,15 @@ function openOnboarding() {
 }
 
 function navigateWizard(direction) {
+    // If attempting to go forward from Step 1, validate business name first
+    if (direction === 1 && currentWizardStep === 1) {
+        const nameInput = document.getElementById('bizName');
+        if (nameInput && !nameInput.value.trim()) {
+            nameInput.reportValidity();
+            return;
+        }
+    }
+
     currentWizardStep += direction;
     if (currentWizardStep < 1) currentWizardStep = 1;
     if (currentWizardStep > 3) currentWizardStep = 3;
@@ -67,14 +78,18 @@ function updateWizardUI() {
 
     prevBtn.style.visibility = (currentWizardStep === 1) ? 'hidden' : 'visible';
     
+    // Using pure native SVGs to completely prevent external CDN loading blocks
     if (currentWizardStep === 3) {
-        nextBtn.innerHTML = `Deploy AI Pipeline <i data-lucide="check" class="w-4 h-4"></i>`;
+        nextBtn.innerHTML = `Deploy AI Pipeline <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1 inline-block"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
         nextBtn.type = "submit";
     } else {
-        nextBtn.innerHTML = `Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        nextBtn.innerHTML = `Next Step <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 ml-1 inline-block"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`;
         nextBtn.type = "button";
     }
-    lucide.createIcons();
+
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 
     // Map configuration tracking active bar lights
     const dots = document.getElementById('stepDots').children;
@@ -89,6 +104,8 @@ function updateWizardUI() {
 
 function handleOnboardingSubmit(event) {
     event.preventDefault();
+    
+    // Safety check: If somehow form submitted before step 3, forward them.
     if (currentWizardStep < 3) {
         navigateWizard(1);
         return;
@@ -221,6 +238,7 @@ function generateFlyerBackground() {
 // --- GRAPHICS BRAND PALETTE COMPILER ---
 function synthesizeBrandKit() {
     const container = document.getElementById('kitColorContainer');
+    if (!container) return;
     container.innerHTML = "";
 
     let colors = [];
@@ -262,7 +280,7 @@ function synthesizeBrandKit() {
                     <span class="text-[10px] text-gray-400 font-mono">${c.hex}</span>
                 </div>
             </div>
-            <i data-lucide="copy" class="w-3.5 h-3.5 text-gray-400"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3.5 h-3.5 text-gray-400"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         `;
         container.appendChild(row);
     });
@@ -278,7 +296,10 @@ function synthesizeBrandKit() {
             <p class="text-[11px] text-gray-500 leading-normal">Optimized directly to parse intent layouts appealing to: ${brandProfile.audience}.</p>
         </div>
     `;
-    lucide.createIcons();
+    
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
 function compileStrategyMatrix() {
@@ -300,6 +321,7 @@ function compileStrategyMatrix() {
 // --- CHRONOLOGICAL DEADLINE GRAPH MATRIX ---
 function initializeCalendarGrid() {
     const grid = document.getElementById('calendarDaysGrid');
+    if (!grid) return;
     grid.innerHTML = ""; 
     
     for (let i = 1; i <= 35; i++) {
@@ -392,13 +414,16 @@ function synchronizeVaultUI() {
                 <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${item.payload}</p>
             </div>
             <div class="flex items-center justify-between pt-2 border-t border-gray-50">
-                <button onclick="removeVaultItem(${item.id})" class="text-[11px] font-semibold text-rose-500 hover:text-rose-700 transition flex items-center gap-1"><i data-lucide="trash-2" class="w-3 h-3"></i> Erase</button>
-                <button onclick="alert('Asset extracted for multi-channel staging.')" class="text-[11px] font-bold text-gray-700 hover:text-indigo-600 transition flex items-center gap-1">Stage Track <i data-lucide="arrow-up-right" class="w-3 h-3"></i></button>
+                <button onclick="removeVaultItem(${item.id})" class="text-[11px] font-semibold text-rose-500 hover:text-rose-700 transition flex items-center gap-1">Erase</button>
+                <button onclick="alert('Asset extracted for multi-channel staging.')" class="text-[11px] font-bold text-gray-700 hover:text-indigo-600 transition flex items-center gap-1">Stage Track</button>
             </div>
         `;
         grid.appendChild(card);
     });
-    lucide.createIcons();
+    
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
 function removeVaultItem(itemId) {

@@ -1202,3 +1202,37 @@ function switchTab(tabId) {
 
     window.scrollTo({ top: 0, behavior: 'instant' });
 }
+// === MOBILE ONBOARDING BUTTON FIX ===
+// Add this after your existing button event listeners
+
+function addMobileTapSupport(selector, handler) {
+  document.querySelectorAll(selector).forEach(el => {
+    // Remove existing listeners to avoid duplicates
+    el.replaceWith(el.cloneNode(true));
+  });
+
+  document.querySelectorAll(selector).forEach(el => {
+    el.addEventListener('click', handler);
+    
+    // Explicit touchend for mobile browsers that miss 'click'
+    el.addEventListener('touchend', function(e) {
+      e.preventDefault(); // prevents ghost click
+      handler.call(this, e);
+    }, { passive: false });
+  });
+}
+
+// Apply to your onboarding option cards
+addMobileTapSupport('.onboarding-option', function() {
+  // your existing selection logic here
+  this.classList.toggle('selected');
+});
+
+// Apply to Next/Back buttons
+addMobileTapSupport('.next-btn, [data-action="next"]', function() {
+  // your existing next step logic
+});
+
+addMobileTapSupport('.back-btn, [data-action="back"]', function() {
+  // your existing back step logic
+});

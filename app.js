@@ -1,391 +1,419 @@
-/**
- * AdVantage AI Pro - Core Interactive State Engineering Framework
- * Architecture: Event-Driven Local State Synchronizer with API Adaptor Fallbacks
- */
-
-// Global Application Application Configuration Properties
-const AD_STORAGE_KEY = "ADVANTAGE_AI_PRO_WORKSPACE_STATE";
-const API_CACHE_KEY = "ADVANTAGE_AI_PRO_KEY_CACHE";
-
-let state = {
-    activePlatformChannel: "facebook",
-    variants: []
+// --- GLOBAL APPLICATION ENVIRONMENT STATE ENGINE ---
+let brandProfile = {
+    name: "",
+    industry: "Food & Beverage",
+    audience: "",
+    tone: "Witty & Energetic",
+    goal: "Social Growth"
 };
 
-// Global Context Reference Cache for Chart Registry Trackers
-let chartRegistryInstance = null;
+let currentWizardStep = 1;
+let generationVault = [];
 
-// Initialization Hook Event Orchestrator
+const tipsArray = [
+    "Use vertical 9:16 short-form video layouts to maximize organic reach structures.",
+    "Incorporate a localized user review in your weekend newsletter outreach sequence.",
+    "High-contrast text graphics yield 24% higher click-through on promotional ads layouts.",
+    "Keep capture structures concise; try limiting social captions to under 140 characters."
+];
+
+// --- CORE INIT EVENT BOUNDARY MOUNT ---
 document.addEventListener("DOMContentLoaded", () => {
-    initializeWorkspace();
-    setupEventListeners();
+    // Render initial icons framework layout elements
+    lucide.createIcons();
+    initializeCalendarGrid();
+    rotateMarketingTips();
+    
+    // Cycle tips loop dynamically
+    setInterval(rotateMarketingTips, 9000);
 });
 
-function initializeWorkspace() {
-    // Restore persistent states from localized storage parameters
-    const workspaceCache = localStorage.getItem(AD_STORAGE_KEY);
-    const keyCache = localStorage.getItem(API_CACHE_KEY);
-
-    if (workspaceCache) {
-        try {
-            const parsedState = JSON.parse(workspaceCache);
-            if (parsedState.variants) state.variants = parsedState.variants;
-            if (parsedState.activePlatformChannel) state.activePlatformChannel = parsedState.activePlatformChannel;
-        } catch (error) {
-            console.error("State recovery sequence corrupted. Building baseline configuration.", error);
-        }
-    }
-
-    if (keyCache) {
-        const keyField = document.getElementById("api-key-input");
-        if (keyField) keyField.value = keyCache;
-    }
-
-    // Stabilize UI view states onto restored target parameters
-    setPlatformChannel(state.activePlatformChannel);
-    renderWorkspaceDisplaySequence();
-}
-
-function setupEventListeners() {
-    // Bind API Token change watcher mechanics
-    const keyField = document.getElementById("api-key-input");
-    if (keyField) {
-        keyField.addEventListener("input", (e) => {
-            localStorage.setItem(API_CACHE_KEY, e.target.value.trim());
-        });
+function rotateMarketingTips() {
+    const el = document.getElementById('rotatingTip');
+    if (el) {
+        el.innerText = tipsArray[Math.floor(Math.random() * tipsArray.length)];
     }
 }
 
-function saveWorkspaceStateToDisk() {
-    localStorage.setItem(AD_STORAGE_KEY, JSON.stringify(state));
+// --- MULTI-STEP PIPELINE RUNTIME WIZARD ---
+function openOnboarding() {
+    currentWizardStep = 1;
+    updateWizardUI();
+    document.getElementById('onboardingModal').classList.remove('hidden');
+    document.getElementById('onboardingModal').classList.add('flex');
 }
 
-function setPlatformChannel(channelKey) {
-    state.activePlatformChannel = channelKey;
+function navigateWizard(direction) {
+    currentWizardStep += direction;
+    if (currentWizardStep < 1) currentWizardStep = 1;
+    if (currentWizardStep > 3) currentWizardStep = 3;
+    updateWizardUI();
+}
+
+function updateWizardUI() {
+    // Mask step layers cleanly
+    document.getElementById('wizardStep1').classList.add('hidden');
+    document.getElementById('wizardStep2').classList.add('hidden');
+    document.getElementById('wizardStep3').classList.add('hidden');
+
+    // Show explicit index layout step
+    document.getElementById(`wizardStep${currentWizardStep}`).classList.remove('hidden');
+
+    // Display metadata tracking updates
+    document.getElementById('stepIndicator').innerText = `Step ${currentWizardStep} of 3`;
     
-    document.querySelectorAll(".channel-btn").forEach(button => {
-        if (button.dataset.channel === channelKey) {
-            button.className = "channel-btn flex flex-col items-center justify-center p-2.5 bg-indigo-600/10 border border-indigo-500 rounded-xl text-indigo-400 cursor-pointer transition";
+    const prevBtn = document.getElementById('prevStepBtn');
+    const nextBtn = document.getElementById('nextStepBtn');
+
+    prevBtn.style.visibility = (currentWizardStep === 1) ? 'hidden' : 'visible';
+    
+    if (currentWizardStep === 3) {
+        nextBtn.innerHTML = `Deploy AI Pipeline <i data-lucide="check" class="w-4 h-4"></i>`;
+        nextBtn.type = "submit";
+    } else {
+        nextBtn.innerHTML = `Next Step <i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+        nextBtn.type = "button";
+    }
+    lucide.createIcons();
+
+    // Map configuration tracking active bar lights
+    const dots = document.getElementById('stepDots').children;
+    for (let i = 0; i < dots.length; i++) {
+        if (i < currentWizardStep) {
+            dots[i].className = "h-1.5 w-8 bg-indigo-600 rounded-full transition-all duration-300";
         } else {
-            button.className = "channel-btn flex flex-col items-center justify-center p-2.5 bg-slate-950 border border-slate-800 hover:border-slate-700 text-slate-400 rounded-xl transition cursor-pointer";
+            dots[i].className = "h-1.5 w-3 bg-gray-200 rounded-full transition-all duration-300";
         }
+    }
+}
+
+function handleOnboardingSubmit(event) {
+    event.preventDefault();
+    if (currentWizardStep < 3) {
+        navigateWizard(1);
+        return;
+    }
+
+    // Bind state parameter configurations
+    brandProfile.name = document.getElementById('bizName').value || "Your Brand Studio";
+    brandProfile.industry = document.getElementById('bizIndustry').value;
+    brandProfile.audience = document.getElementById('bizAudience').value || "General Demographic Market";
+    brandProfile.tone = document.getElementById('bizTone').value;
+    brandProfile.goal = document.querySelector('input[name="bizGoal"]:checked').value;
+
+    // Propagate updates instantly across client layouts
+    document.getElementById('headerWelcome').innerText = `Sync: ${brandProfile.name}`;
+    document.getElementById('sideBizName').innerText = brandProfile.name;
+    document.getElementById('avatarLetter').innerText = brandProfile.name.charAt(0).toUpperCase();
+
+    // Fire generation pipelines mapping mock frameworks
+    synthesizeBrandKit();
+    compileStrategyMatrix();
+    seedCalendarEvents();
+
+    // Close screen modal mask overlay
+    document.getElementById('onboardingModal').classList.add('hidden');
+    document.getElementById('onboardingModal').classList.remove('flex');
+}
+
+// --- APPLICATION VIEWPORT CONTROLLER ROUTER ---
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-view').forEach(view => view.classList.add('hidden'));
+    document.getElementById(`view-${tabId}`).classList.remove('hidden');
+
+    // Wipe status properties across standard buttons navigation arrays
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-50', 'text-indigo-600');
+        btn.classList.add('text-gray-500', 'hover:bg-gray-50', 'hover:text-gray-900');
+    });
+
+    // Remap activation parameters on current clicked node components
+    document.querySelectorAll(`.tab-btn[data-tab="${tabId}"]`).forEach(btn => {
+        btn.classList.add('bg-indigo-50', 'text-indigo-600');
+        btn.classList.remove('text-gray-500', 'hover:bg-gray-50');
     });
 }
 
-function clearWorkspace() {
-    if (confirm("Are you certain you wish to purge all active copywriting variants and analytical performance metrics data parameters?")) {
-        state.variants = [];
-        saveWorkspaceStateToDisk();
-        renderWorkspaceDisplaySequence();
+// --- TEXT GENERATION LOGIC LOOP ---
+function generateTextContent() {
+    const type = document.getElementById('creatorType').value;
+    const prompt = document.getElementById('creatorPrompt').value;
+    
+    const emptyState = document.getElementById('creatorOutputEmpty');
+    const loader = document.getElementById('creatorOutputLoader');
+    const container = document.getElementById('creatorOutputContainer');
+    const actionRow = document.getElementById('creatorActionRow');
+
+    emptyState.classList.add('hidden');
+    container.classList.add('hidden');
+    actionRow.classList.add('hidden');
+    loader.classList.remove('hidden');
+
+    setTimeout(() => {
+        loader.classList.add('hidden');
+        container.classList.remove('hidden');
+        actionRow.classList.remove('hidden');
+
+        container.innerText = runTextSynthesisEngine(type, prompt);
+    }, 1200);
+}
+
+function runTextSynthesisEngine(type, userPrompt) {
+    const name = brandProfile.name || "Our Brand";
+    const tone = brandProfile.tone;
+    const detail = userPrompt ? `"${userPrompt}"` : "our baseline core premium offering framework";
+
+    switch(type) {
+        case "Social Media Caption":
+            return `✨ Fresh perspective alert via ${name}! ✨\n\nThinking deeply around how we approach ${detail}. Every single touchpoint is curated explicitly to deliver luxury outcomes matching structural precision. \n\nHow does your team optimize this flow? Drop your strategy variants down below! 👇\n\n#Innovation #Strategy #MarketMateAI #${brandProfile.industry.replace(/\s+/g, '')}`;
+        case "Product Description":
+            return `Introducing the flagship iteration by ${name}. Built on high-performance operational architectures, this answers the exact marketplace demand for ${detail}. Synthesized using certified non-destructive frameworks, optimized for daily efficiency loops.\n\nKey Specifications:\n• Tuned directly for premium deployment profiles.\n• Architectural endurance mapping built-in.\n• Dynamic custom calibration layers included natively.`;
+        case "Email Newsletter":
+            return `Subject: Breaking status-quo limitations with ${name} 🚀\n\nHello Insider,\n\nThe marketplace transitions fast, but your capability matrix can scale faster. We are officially dropping configurations focusing on ${detail}.\n\nWe looked closely at industry standards and decided they weren't optimized enough. Here is your early-access invitation layout to join the next tier of scale.\n\nBest regards,\nTeam ${name}`;
+        default:
+            return `• Strategy Bundle Focus Axis: ${detail}\n• Content Vector Alignment: Optimized for ${tone} output parameters.\n• Execution Recommendation: Disseminate across core traffic channels during peak engagement index timelines.`;
     }
 }
 
-// ASYNCHRONOUS ENGINE DISPATCH ACTION SYSTEM
-async function generateAdCopyVariants() {
-    const prodName = document.getElementById("input-prod-name").value.trim();
-    const prodDesc = document.getElementById("input-prod-desc").value.trim();
-    const toneChoice = document.getElementById("input-prod-tone").value;
-    const apiKey = document.getElementById("api-key-input").value.trim();
+function handleOmniGenerate() {
+    const promptVal = document.getElementById('omniPrompt').value;
+    if (!promptVal) return;
 
-    if (!prodName || !prodDesc) {
-        alert("Action Required: Please provide both a brand name and a product briefing payload description before initiating generation.");
-        return;
-    }
+    document.getElementById('creatorPrompt').value = promptVal;
+    switchTab('creator');
+    generateTextContent();
+    document.getElementById('omniPrompt').value = "";
+}
 
-    // Toggle interactive loading UI skeleton parameters
-    const triggerButton = document.querySelector("button[onclick='generateAdCopyVariants()']");
-    const originalBtnHTML = triggerButton.innerHTML;
-    triggerButton.disabled = true;
-    triggerButton.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin mr-2"></i><span>Orchestrating AI Copy Framework...</span>`;
-    lucide.createIcons();
+// --- DYNAMIC VISUAL LAYER RE-CALIBRATION RUNTIME ---
+function updateFlyerCanvas() {
+    const type = document.getElementById('flyerLayout').value;
+    const headline = document.getElementById('flyerHeadline').value;
+    const subtext = document.getElementById('flyerSubtext').value;
+    const cta = document.getElementById('flyerCTA').value;
 
-    try {
-        if (apiKey) {
-            // Live production layout interface route connecting straight up onto official Anthropic endpoints
-            await executeActualAnthropicTransaction(apiKey, prodName, prodDesc, toneChoice, state.activePlatformChannel);
-        } else {
-            // Graceful tactical placeholder injection sequence mapping
-            await new Promise(resolve => setTimeout(resolve, 1400)); // Simulating natural execution cycle latency loops
-            injectHighFidelityMockPayload(prodName, prodDesc, toneChoice, state.activePlatformChannel);
-        }
-    } catch (apiError) {
-        console.error("Strategic copywriting delivery architecture anomaly encountered:", apiError);
-        alert("System Notice: Failed to sync communications downstream down onto target LLM processing systems. Utilizing defensive localized fallback copy generation arrays.");
-        injectHighFidelityMockPayload(prodName, prodDesc, toneChoice, state.activePlatformChannel);
-    } finally {
-        // Restore interactive controls
-        triggerButton.disabled = false;
-        triggerButton.innerHTML = originalBtnHTML;
-        lucide.createIcons();
+    document.getElementById('canvasHeadline').innerText = headline;
+    document.getElementById('canvasSubtext').innerText = subtext;
+    document.getElementById('canvasCTA').innerText = cta;
+
+    const tagEl = document.getElementById('canvasHeaderTag');
+    const canvasEl = document.getElementById('flyerRenderCanvas');
+
+    if (type === 'event') {
+        tagEl.innerText = "Exclusive Invitation";
+        canvasEl.className = "aspect-[4/5] max-w-[380px] mx-auto bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl shadow-xl p-8 flex flex-col justify-between text-white relative overflow-hidden transition-all duration-300";
+    } else if (type === 'promo') {
+        tagEl.innerText = "Limited Flash Offer";
+        canvasEl.className = "aspect-[4/5] max-w-[380px] mx-auto bg-gradient-to-br from-rose-600 to-amber-500 rounded-2xl shadow-xl p-8 flex flex-col justify-between text-white relative overflow-hidden transition-all duration-300";
+    } else {
+        tagEl.innerText = "Community Update";
+        canvasEl.className = "aspect-[4/5] max-w-[380px] mx-auto bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl shadow-xl p-8 flex flex-col justify-between text-white relative overflow-hidden transition-all duration-300";
     }
 }
 
-// INTERACTIVE DATA PRESENTATION ARCHITECTURE HYDRATOR
-function renderWorkspaceDisplaySequence() {
-    const cardsStack = document.getElementById("variant-cards-stack");
-    const emptyState = document.getElementById("empty-state");
-    const countBadge = document.getElementById("count-badge");
-    const analyticsBox = document.getElementById("analytics-section");
+function generateFlyerBackground() {
+    const prompt = document.getElementById('flyerBgPrompt').value;
+    if (!prompt) return;
+    alert(`AI Vector Injection active: Modifying design grid architecture to support palette variants matching: "${prompt}"`);
+    document.getElementById('flyerBgPrompt').value = "";
+}
 
-    cardsStack.innerHTML = "";
-    countBadge.innerText = `${state.variants.length} Copy Assets Loaded`;
+// --- GRAPHICS BRAND PALETTE COMPILER ---
+function synthesizeBrandKit() {
+    const container = document.getElementById('kitColorContainer');
+    container.innerHTML = "";
 
-    if (state.variants.length === 0) {
-        emptyState.classList.remove("hidden");
-        analyticsBox.classList.add("hidden");
-        if (chartRegistryInstance) {
-            chartRegistryInstance.destroy();
-            chartRegistryInstance = null;
-        }
-        return;
+    let colors = [];
+    if (brandProfile.tone.includes("Witty")) {
+        colors = [
+            { name: "Electric Indigo", hex: "#4F46E5" },
+            { name: "Vibrant Violet", hex: "#7C3AED" },
+            { name: "Amber Pop", hex: "#F59E0B" },
+            { name: "Slate Ground", hex: "#0F172A" }
+        ];
+        document.getElementById('kitFontHeader').innerText = "Plus Jakarta Sans";
+    } else if (brandProfile.tone.includes("Professional")) {
+        colors = [
+            { name: "Navy Corporate", hex: "#1E3A8A" },
+            { name: "Steel Slate", hex: "#475569" },
+            { name: "Ice Accent", hex: "#E0F2FE" },
+            { name: "Ink Core", hex: "#030712" }
+        ];
+        document.getElementById('kitFontHeader').innerText = "Merriweather Serif";
+    } else {
+        colors = [
+            { name: "Sage Minimal", hex: "#15803D" },
+            { name: "Earthy Clay", hex: "#B45309" },
+            { name: "Warm Linen", hex: "#FEF3C7" },
+            { name: "Charcoal Elite", hex: "#1F2937" }
+        ];
+        document.getElementById('kitFontHeader').innerText = "Inter Display";
     }
 
-    emptyState.classList.add("hidden");
-    analyticsBox.classList.remove("hidden");
-
-    let absoluteTopVariantInstance = state.variants[0];
-    let computationalAggregateImpressions = 0;
-
-    const channelUIMapping = {
-        facebook: { icon: "facebook", headerBg: "bg-[#1877F2]/10 text-[#1877F2] border-[#1877F2]/20", textLabel: "Facebook In-Feed Preview" },
-        google: { icon: "search", headerBg: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20", textLabel: "Google Premium SERP Target Ad" },
-        instagram: { icon: "instagram", headerBg: "bg-pink-500/10 text-pink-400 border-pink-500/20", textLabel: "Instagram Grid Placement Preview" }
-    };
-
-    state.variants.forEach(variant => {
-        computationalAggregateImpressions += variant.impressions;
-        if (parseFloat(variant.currentCtr) > parseFloat(absoluteTopVariantInstance.currentCtr)) {
-            absoluteTopVariantInstance = variant;
-        }
-
-        const uiCfg = channelUIMapping[variant.channel] || channelUIMapping.facebook;
-        const cardNode = document.createElement("div");
-        cardNode.className = `p-4 bg-slate-900 border rounded-2xl flex flex-col justify-between transition-all relative overflow-hidden ${variant.isWinner ? 'winner-card-glow' : 'border-slate-800'}`;
-        
-        cardNode.innerHTML = `
-            ${variant.isWinner ? '<div class="absolute top-0 right-0 bg-amber-500 text-slate-950 font-extrabold text-[8px] uppercase tracking-widest px-3 py-1 rounded-bl-xl shadow-sm">Winner Variant</div>' : ''}
-            <div class="space-y-3">
-                <div class="flex items-center space-x-2">
-                    <span class="text-[9px] px-2 py-0.5 font-bold uppercase tracking-wider rounded-md border ${uiCfg.headerBg} flex items-center gap-1">
-                        <i data-lucide="${uiCfg.icon}" class="w-2.5 h-2.5"></i>
-                        ${variant.channel}
-                    </span>
-                    <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Tone: ${variant.tone}</span>
-                </div>
-                <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2">
-                    <div class="text-[10px] font-semibold text-slate-500 border-b border-slate-900 pb-1 flex justify-between">
-                        <span>${uiCfg.textLabel}</span>
-                        <span class="text-indigo-400 font-bold">CTR: ${variant.currentCtr}%</span>
-                    </div>
-                    <h4 class="text-xs font-bold text-white tracking-wide select-all">${variant.headline}</h4>
-                    <p class="text-[11px] text-slate-400 leading-relaxed select-all">${variant.body}</p>
+    colors.forEach(c => {
+        const row = document.createElement('div');
+        row.className = "flex items-center justify-between p-2 border border-gray-50 rounded-xl hover:bg-gray-50 transition cursor-pointer";
+        row.onclick = () => alert(`Copied Hex Color code: ${c.hex}`);
+        row.innerHTML = `
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg shadow-inner border border-black/5" style="background-color: ${c.hex}"></div>
+                <div>
+                    <p class="text-xs font-semibold text-gray-800">${c.name}</p>
+                    <span class="text-[10px] text-gray-400 font-mono">${c.hex}</span>
                 </div>
             </div>
-            <div class="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
-                <div class="flex space-x-3 text-[10px] text-slate-400">
-                    <span>Imps: <strong>${variant.impressions.toLocaleString()}</strong></span>
-                    <span>CTR: <strong class="text-emerald-400">${variant.currentCtr}%</strong></span>
-                </div>
-                <div class="flex space-x-1">
-                    <button onclick="toggleDeclareWinner('${variant.id}')" class="px-2.5 py-1 text-[10px] font-bold rounded-lg border transition cursor-pointer ${variant.isWinner ? 'bg-amber-500/10 text-amber-400 border-amber-500/30' : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-white hover:border-slate-700'}">
-                        <i data-lucide="trophy" class="w-3 h-3 inline mr-1"></i> ${variant.isWinner ? 'Dethrone' : 'Mark Winner'}
-                    </button>
-                    <button onclick="purgeSingleCardVariant('${variant.id}')" class="p-1 text-slate-500 hover:text-red-400 rounded-lg transition cursor-pointer">
-                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                    </button>
-                </div>
-            </div>
+            <i data-lucide="copy" class="w-3.5 h-3.5 text-gray-400"></i>
         `;
-        cardsStack.appendChild(cardNode);
+        container.appendChild(row);
     });
 
-    // Sync Dashboard Context Elements Text Properties
-    document.getElementById("txt-top-variant").innerText = absoluteTopVariantInstance ? `Variant (${absoluteTopVariantInstance.headline.substring(0,12)}...)` : 'N/A';
-    document.getElementById("txt-top-ctr").innerText = absoluteTopVariantInstance ? `${absoluteTopVariantInstance.currentCtr}% CTR` : '0.00%';
-    document.getElementById("txt-total-impressions").innerText = computationalAggregateImpressions.toLocaleString();
-
-    rehydrateSplitTestCharts();
+    const voiceContainer = document.getElementById('kitVoiceContainer');
+    voiceContainer.innerHTML = `
+        <div class="p-3 border-l-4 border-indigo-500 bg-indigo-50/30 rounded-r-xl">
+            <p class="text-xs font-semibold text-gray-800 mb-0.5">Core Tonality Vector</p>
+            <p class="text-[11px] text-gray-500 leading-normal">Maintain an output standard configured explicitly as: ${brandProfile.tone}. Avoid legacy fluff words.</p>
+        </div>
+        <div class="p-3 border-l-4 border-emerald-500 bg-emerald-50/30 rounded-r-xl">
+            <p class="text-xs font-semibold text-gray-800 mb-0.5">Audience Matrix Fit</p>
+            <p class="text-[11px] text-gray-500 leading-normal">Optimized directly to parse intent layouts appealing to: ${brandProfile.audience}.</p>
+        </div>
+    `;
     lucide.createIcons();
 }
 
-function toggleDeclareWinner(targetId) {
-    state.variants.forEach(variant => {
-        if (variant.id === targetId) {
-            variant.isWinner = !variant.isWinner;
-        } else {
-            variant.isWinner = false; // Strictly enforce mutual exclusivity inside the split validation pool
-        }
-    });
-    saveWorkspaceStateToDisk();
-    renderWorkspaceDisplaySequence();
+function compileStrategyMatrix() {
+    const grid = document.getElementById('strategyCardGrid');
+    grid.innerHTML = `
+        <div class="border border-gray-100 rounded-xl p-4 bg-white shadow-sm space-y-2">
+            <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">Acquisition Blueprint</span>
+            <h4 class="font-semibold text-gray-800 text-sm">The 3-Part Content Loop</h4>
+            <p class="text-xs text-gray-500 leading-relaxed">Publish 1 authority post clarifying problem architecture, 1 conversion asset offering immediate value, and 1 community interaction anchor weekly.</p>
+        </div>
+        <div class="border border-gray-100 rounded-xl p-4 bg-white shadow-sm space-y-2">
+            <span class="text-[10px] font-bold text-violet-600 uppercase tracking-wider block">Niche Execution Axis</span>
+            <h4 class="font-semibold text-gray-800 text-sm">${brandProfile.industry} Growth Hack</h4>
+            <p class="text-xs text-gray-500 leading-relaxed">Competitors focus entirely on programmatic feature display. Differentiate instantly by publishing raw case-studies structured using your unique style profile.</p>
+        </div>
+    `;
 }
 
-function purgeSingleCardVariant(targetId) {
-    state.variants = state.variants.filter(variant => variant.id !== targetId);
-    saveWorkspaceStateToDisk();
-    renderWorkspaceDisplaySequence();
-}
-
-// CHARTS RE-AGGREGATION INTEGRATION PIPELINE
-function rehydrateSplitTestCharts() {
-    const chartCanvas = document.getElementById('conversionChart');
-    if (!chartCanvas) return;
+// --- CHRONOLOGICAL DEADLINE GRAPH MATRIX ---
+function initializeCalendarGrid() {
+    const grid = document.getElementById('calendarDaysGrid');
+    grid.innerHTML = ""; 
     
-    const ctx = chartCanvas.getContext('2d');
-    if (chartRegistryInstance) {
-        chartRegistryInstance.destroy();
+    for (let i = 1; i <= 35; i++) {
+        const cell = document.createElement('div');
+        cell.className = "p-1.5 md:p-2 bg-white flex flex-col justify-between overflow-hidden relative group hover:bg-gray-50/50 transition select-none";
+        
+        const dayNum = (i % 31) + 1;
+        cell.innerHTML = `<span class="text-[10px] font-semibold text-gray-400 block self-start">${dayNum}</span><div class="space-y-1 overflow-y-auto no-scrollbar w-full" id="cal-cell-slot-${i}"></div>`;
+        grid.appendChild(cell);
     }
+}
 
-    if (state.variants.length === 0) return;
-
-    // Isolate properties for the top 3 items to preserve view aesthetics
-    const focusedVisualizationSubgroup = state.variants.slice(0, 3);
-    const intervalsTimelineLabels = ["Day 1", "Day 3", "Day 5", "Day 7", "Day 9", "Audit Interval"];
-
-    const programmaticPaletteTheme = [
-        { stroke: '#4f46e5', glow: 'rgba(79, 70, 229, 0.05)' },
-        { stroke: '#06b6d4', glow: 'rgba(6, 182, 212, 0.05)' },
-        { stroke: '#f59e0b', glow: 'rgba(245, 158, 11, 0.05)' }
+function seedCalendarEvents() {
+    initializeCalendarGrid(); 
+    
+    const appointments = [
+        { slot: 4, label: "Promo Email Campaign", color: "bg-amber-100 text-amber-800 border-amber-200" },
+        { slot: 12, label: "IG Flyer Push", color: "bg-indigo-100 text-indigo-800 border-indigo-200" },
+        { slot: 24, label: "Product Copy Audit", color: "bg-emerald-100 text-emerald-800 border-emerald-200" }
     ];
 
-    const generatedDatasets = focusedVisualizationSubgroup.map((variant, index) => {
-        const color = programmaticPaletteTheme[index] || programmaticPaletteTheme[0];
-        return {
-            label: `[${variant.channel.toUpperCase()}] ${variant.headline.substring(0, 14)}...`,
-            data: variant.ctrHistory,
-            borderColor: color.stroke,
-            backgroundColor: color.glow,
-            borderWidth: 2,
-            tension: 0.35,
-            fill: true
-        };
-    });
-
-    chartRegistryInstance = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: intervalsTimelineLabels,
-            datasets: generatedDatasets
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: { color: '#94a3b8', boxWidth: 10, font: { size: 10, weight: '600' } }
-                }
-            },
-            scales: {
-                y: {
-                    grid: { color: '#1e293b' },
-                    ticks: { color: '#64748b', font: { size: 9 } }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#64748b', font: { size: 9 } }
-                }
-            }
+    appointments.forEach(app => {
+        const targetSlot = document.getElementById(`cal-cell-slot-${app.slot}`);
+        if (targetSlot) {
+            const block = document.createElement('span');
+            block.className = `text-[8px] md:text-[9px] font-bold px-1.5 py-0.5 rounded border block truncate leading-tight tracking-tight shadow-sm ${app.color}`;
+            block.innerText = app.label;
+            targetSlot.appendChild(block);
         }
     });
 }
 
-// REAL ANTHROPIC API HANDSHAKE SCHEMA SPECIFICATION
-async function executeActualAnthropicTransaction(key, brandName, briefing, tone, channel) {
-    // Exact API request blueprint structure modeled after Anthropic Messages protocol
-    const endpointUrl = "https://api.anthropic.com/v1/messages";
-    
-    const structuredSystemDirectives = `You are an elite direct-response conversion copywriter. 
-    Generate exactly 2 diverse split-test ad copy variants for ${channel.toUpperCase()}. 
-    Return a strict raw JSON array format matching this structural schema template context:
-    [{"headline": "Variant string text", "body": "Ad copy content paragraph matching network constraints"}]`;
+// --- VAULT ASSET LEDGER ARRAY UTILITIES ---
+function saveCurrentTextAsset() {
+    const content = document.getElementById('creatorOutputContainer').innerText;
+    const type = document.getElementById('creatorType').value;
+    if (!content) return;
 
-    // Performing authentic network fetch execution attempt
-    const response = await fetch(endpointUrl, {
-        method: "POST",
-        headers: {
-            "x-api-key": key,
-            "anthropic-version": "2023-06-01",
-            "content-type": "application/json",
-            "dangerously-allow-the-api-key-in-the-browser": "true"
-        },
-        body: JSON.stringify({
-            model: "claude-3-5-sonnet-20241022",
-            max_tokens: 1000,
-            system: structuredSystemDirectives,
-            messages: [{ role: "user", content: `Product: ${brandName}. Context/Brief: ${briefing}. Tone focus: ${tone}.` }]
-        })
-    });
-
-    if (!response.ok) {
-        throw new Error(`Anthropic Node integration network exception. Status code: ${response.status}`);
-    }
-
-    const dataResult = await response.json();
-    const rawTextResponse = dataResult.content[0].text;
-    
-    // Parse response tokens out safely downstream onto active states
-    const parsedPayloadArray = JSON.parse(rawTextResponse);
-    
-    parsedPayloadArray.forEach((item, i) => {
-        const sampleHistoricalCTR = Array.from({length: 6}, () => (Math.random() * 2.8 + 1.4).toFixed(2));
-        state.variants.unshift({
-            id: `v-real-${Date.now()}-${i}`,
-            channel: channel,
-            tone: tone,
-            headline: item.headline,
-            body: item.body,
-            isWinner: false,
-            impressions: Math.floor(Math.random() * 10000 + 12000),
-            ctrHistory: sampleHistoricalCTR,
-            currentCtr: sampleHistoricalCTR[sampleHistoricalCTR.length - 1]
-        });
-    });
-
-    saveWorkspaceStateToDisk();
-    renderWorkspaceDisplaySequence();
-}
-
-function injectHighFidelityMockPayload(brand, description, tone, channel) {
-    const multiChannelCopyMatrix = {
-        facebook: [
-            { headline: `🔥 This Tiny ${brand} Change Changes Everything.`, body: `Frustrated with standard solutions that underdeliver? Here is the truth: ${description}. Get yours today with our risk-free 30-day conversion framework guarantee applied instantly.` },
-            { headline: `The Non-Obvious Reason Experts Choose ${brand}.`, body: `Stop burning engineering bandwidth on broken workflows. Developed specifically to resolve deep production challenges: ${description}. Read our full data analysis layout map.` }
-        ],
-        google: [
-            { headline: `Official ${brand} | Achieve Peak Efficiency Now`, body: `Banish technical bottlenecks once and for all. ${description}. Next-day setup available.` },
-            { headline: `Engineered For Results | The Top-Rated ${brand}`, body: `Discover why 10,000+ scaling cross-functional organizations choose us: ${description}. Learn more.` }
-        ],
-        instagram: [
-            { headline: `Built to work. Tailored to scale. ✨`, body: `We completely reimagined what an optimal product baseline execution experience feels like. ${description}. Click our link in bio to register for immediate preview entry access.` },
-            { headline: `Pattern Interrupt: Redefining ${brand}.`, body: `No tutorial clones, no legacy technical debt constraints. Just pure focus on ${description}. Explore the framework.` }
-        ]
+    const asset = {
+        id: Date.now(),
+        type: type,
+        payload: content,
+        format: "Text Script"
     };
 
-    const activeSelectedCopyList = multiChannelCopyMatrix[channel] || multiChannelCopyMatrix.facebook;
-    
-    activeSelectedCopyList.forEach((mockItem, index) => {
-        const structuralCTRDataPoints = Array.from({length: 6}, () => (Math.random() * 3.1 + 1.1).toFixed(2));
-        state.variants.unshift({
-            id: `v-mock-${Date.now()}-${index}`,
-            channel: channel,
-            tone: tone,
-            headline: mockItem.headline,
-            body: mockItem.body,
-            isWinner: false,
-            impressions: Math.floor(Math.random() * 25000 + 10000),
-            ctrHistory: structuralCTRDataPoints,
-            currentCtr: structuralCTRDataPoints[structuralCTRDataPoints.length - 1]
-        });
-    });
-
-    saveWorkspaceStateToDisk();
-    renderWorkspaceDisplaySequence();
+    generationVault.push(asset);
+    synchronizeVaultUI();
+    alert("Asset securely committed to workspace storage vault library dashboard layout.");
 }
-// Replace the executeActualAnthropicTransaction block inside app.js with this safe handler
-async function executeActualAnthropicTransaction(key, brandName, briefing, tone, channel) {
-    console.warn("Direct browser calls to Anthropic are blocked by CORS policies. Simulating response format...");
-    // Fall back to the high-fidelity mock engine so the UI doesn't freeze or lock up on GitHub
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    injectHighFidelityMockPayload(brandName, briefing, tone, channel);
+
+function vaultFlyerAsset() {
+    const headline = document.getElementById('flyerHeadline').value;
+    const asset = {
+        id: Date.now(),
+        type: "Visual Grid Component",
+        payload: `Blueprint title: ${headline}`,
+        format: "Canvas Vector Layout Structure"
+    };
+
+    generationVault.push(asset);
+    synchronizeVaultUI();
+    alert("Design metrics cached to workspace tracking vault elements safely.");
+}
+
+function synchronizeVaultUI() {
+    const emptyState = document.getElementById('vaultEmptyState');
+    const grid = document.getElementById('vaultGrid');
+    document.getElementById('dashAssetCount').innerText = `${generationVault.length} Core ${generationVault.length === 1 ? 'Asset' : 'Assets'}`;
+
+    if (generationVault.length === 0) {
+        emptyState.classList.remove('hidden');
+        grid.classList.add('hidden');
+        return;
+    }
+
+    emptyState.classList.add('hidden');
+    grid.classList.remove('hidden');
+    grid.innerHTML = ""; 
+
+    generationVault.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "bg-white border border-gray-100 rounded-xl p-4 flex flex-col justify-between space-y-3 shadow-sm hover:border-indigo-100 transition";
+        card.innerHTML = `
+            <div class="space-y-1">
+                <div class="flex items-center justify-between">
+                    <span class="text-[9px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full uppercase tracking-wider">${item.format}</span>
+                    <span class="text-[10px] text-gray-300 font-mono">#${item.id.toString().slice(-4)}</span>
+                </div>
+                <h4 class="font-bold text-gray-800 text-sm truncate">${item.type}</h4>
+                <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">${item.payload}</p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-gray-50">
+                <button onclick="removeVaultItem(${item.id})" class="text-[11px] font-semibold text-rose-500 hover:text-rose-700 transition flex items-center gap-1"><i data-lucide="trash-2" class="w-3 h-3"></i> Erase</button>
+                <button onclick="alert('Asset extracted for multi-channel staging.')" class="text-[11px] font-bold text-gray-700 hover:text-indigo-600 transition flex items-center gap-1">Stage Track <i data-lucide="arrow-up-right" class="w-3 h-3"></i></button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+    lucide.createIcons();
+}
+
+function removeVaultItem(itemId) {
+    generationVault = generationVault.filter(i => i.id !== itemId);
+    synchronizeVaultUI();
+}
+
+// --- BASIC UTILITY ACTIONS ---
+function copyToClipboard(elementId) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Material successfully copied to clipboard system operations storage.");
+    });
+}
+
+function downloadFlyerAsset() {
+    alert("Compiling layers... System dynamically packet-rendering your customized high-resolution PNG workspace download format cleanly.");
 }

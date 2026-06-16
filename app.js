@@ -1172,3 +1172,33 @@ function downloadFlyerAsset() {
         });
     }
 }
+// --- MOBILE-FIXED VIEW NAVIGATION CONTROLLER ---
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-view').forEach(v => v.classList.add('hidden'));
+    const targetedView = document.getElementById(`view-${tabId}`);
+    if (targetedView) targetedView.classList.remove('hidden');
+
+    // Desktop UI State Reset
+    document.querySelectorAll('aside .tab-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-50', 'text-indigo-600');
+        btn.classList.add('text-gray-500', 'hover:bg-gray-50');
+    });
+    const activeDeskBtn = document.querySelector(`aside .tab-btn[data-tab="${tabId}"]`);
+    if (activeDeskBtn) {
+        activeDeskBtn.classList.add('bg-indigo-50', 'text-indigo-600');
+        activeDeskBtn.classList.remove('text-gray-500');
+    }
+
+    // FIXED: Changed [data-tab] to [data-mobile-tab] to match HTML footprint precisely
+    document.querySelectorAll('.mobile-tab-btn').forEach(btn => {
+        btn.classList.remove('text-indigo-600');
+        btn.classList.add('text-gray-400');
+    });
+    const activeMobBtn = document.querySelector(`.mobile-tab-btn[data-mobile-tab="${tabId}"]`);
+    if (activeMobBtn) {
+        activeMobBtn.classList.add('text-indigo-600');
+        activeMobBtn.classList.remove('text-gray-400');
+    }
+
+    window.scrollTo({ top: 0, behavior: 'instant' });
+}

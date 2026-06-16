@@ -32,7 +32,14 @@ body {
 /* ==========================================================================
    MARKETMATE GLOBAL MOBILE OPTIMIZATION SHEET
    ========================================================================== */
-
+/* Prevent hidden desktop layers from absorbing mobile click streams */
+@media screen and (max-width: 640px) {
+    aside {
+        display: none !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+}
 /* Baseline Mobile-First Enhancements */
 body {
     -webkit-font-smoothing: antialiased;

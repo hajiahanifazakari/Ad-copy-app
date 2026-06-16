@@ -2,576 +2,435 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketMate AI - Create Better Marketing in Minutes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MarketMate AI - Marketing Intelligence Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Merriweather:wght@400;700&family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen pb-20 md:pb-0 md:pl-64">
+<body class="bg-gray-50 text-gray-900 min-h-screen pb-24 md:pb-0 md:pl-64">
 
-    <div id="onboardingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transition-all">
+    <div id="onboardingModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-50 flex items-center justify-center p-4 touch-none">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 max-h-[90vh] overflow-y-auto pointer-events-auto">
             <div class="flex items-center justify-between mb-6">
-                <span class="text-sm font-semibold text-indigo-600 uppercase tracking-wider" id="stepIndicator">Step 1 of 3</span>
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest" id="stepIndicator">Step 1 of 3</span>
                 <div class="flex gap-1.5" id="stepDots">
-                    <div class="h-1.5 w-8 bg-indigo-600 rounded-full"></div>
-                    <div class="h-1.5 w-3 bg-gray-200 rounded-full"></div>
-                    <div class="h-1.5 w-3 bg-gray-200 rounded-full"></div>
+                    <div class="h-1.5 w-8 bg-indigo-600 rounded-full transition-all"></div>
+                    <div class="h-1.5 w-3 bg-gray-200 rounded-full transition-all"></div>
+                    <div class="h-1.5 w-3 bg-gray-200 rounded-full transition-all"></div>
                 </div>
             </div>
 
             <div id="wizardStep1" class="space-y-4">
-                <h2 class="text-2xl font-bold text-gray-900">Tell us about your brand</h2>
-                <p class="text-gray-500 text-sm">We'll train your personalized MarketMate AI using these details.</p>
+                <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Identity Parameters</h2>
+                <p class="text-gray-500 text-xs">Let's ground your marketing intelligence matrix.</p>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Business Name</label>
-                    <input type="text" id="bizName" placeholder="e.g., Sweet Bloom Bakery" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Business / Brand Name</label>
+                    <input type="text" id="bizName" value="Sourdough Social" placeholder="e.g., Sweet Bloom Bakery" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Industry / Niche</label>
-                    <select id="bizIndustry" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                        <option>Food & Beverage</option>
-                        <option>E-commerce & Retail</option>
-                        <option>Real Estate</option>
-                        <option>SaaS & Tech Startup</option>
-                        <option>Health & Wellness</option>
-                        <option>Freelancer / Creator</option>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Primary Core Offering</label>
+                    <input type="text" id="bizOffering" value="Artisanal Wild Yeast Croissants" placeholder="e.g., Organic Skincare, Premium Coffee" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Industry Niche Vertical</label>
+                    <select id="bizIndustry" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="Food & Beverage">Food & Beverage</option>
+                        <option value="E-commerce & Retail">E-commerce & Retail</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="SaaS & Tech Startup">SaaS & Tech Startup</option>
+                        <option value="Health & Wellness">Health & Wellness</option>
                     </select>
                 </div>
             </div>
 
             <div id="wizardStep2" class="space-y-4 hidden">
-                <h2 class="text-2xl font-bold text-gray-900">Who are we talking to?</h2>
-                <p class="text-gray-500 text-sm">Define your target demographic and personality flavor profiles.</p>
+                <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Market Target Coordinates</h2>
+                <p class="text-gray-500 text-xs">Define who experiences your brand messages.</p>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Target Audience</label>
-                    <input type="text" id="bizAudience" placeholder="e.g., Busy local moms, Gen-Z foodies" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Target Audience Profile</label>
+                    <input type="text" id="bizAudience" value="Local weekend foodies & organic purists" placeholder="e.g., Busy local moms, Gen-Z tech founders" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Brand Voice Tone</label>
-                    <select id="bizTone" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                        <option>Witty & Energetic</option>
-                        <option>Professional & Authoritative</option>
-                        <option>Empathetic & Warm</option>
-                        <option>Minimalist & Luxury</option>
+                    <label class="block text-[10px] font-bold text-gray-700 uppercase mb-1 tracking-wider">Core Voice Personality</label>
+                    <select id="bizTone" class="w-full border border-gray-200 rounded-xl px-4 py-2.5 bg-white text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <option value="Witty & Energetic">Witty & Energetic</option>
+                        <option value="Professional & Authoritative">Professional & Authoritative</option>
+                        <option value="Empathetic & Warm">Empathetic & Warm</option>
+                        <option value="Minimalist & Luxury">Minimalist & Luxury</option>
                     </select>
                 </div>
             </div>
 
             <div id="wizardStep3" class="space-y-4 hidden">
-                <h2 class="text-2xl font-bold text-gray-900">What's your primary goal?</h2>
-                <p class="text-gray-500 text-sm">Choose what areas you want to hyper-optimize first.</p>
-                <div class="grid grid-cols-1 gap-2.5">
-                    <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
+                <h2 class="text-xl font-extrabold text-gray-900 tracking-tight">Campaign Alignment</h2>
+                <p class="text-gray-500 text-xs">Pick the metric trajectory to train vectors around.</p>
+                <div class="grid grid-cols-1 gap-2">
+                    <label class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
                         <input type="radio" name="bizGoal" value="Social Growth" checked class="text-indigo-600 focus:ring-indigo-500">
                         <div>
-                            <p class="text-sm font-semibold text-gray-900">Grow Social Channels</p>
-                            <p class="text-xs text-gray-500">Captions, tracking calendars & consistent layouts</p>
+                            <p class="text-xs font-semibold text-gray-900">Grow High-Reach Social Channels</p>
+                            <p class="text-[10px] text-gray-400">Captions, viral trends and consistent aesthetics</p>
                         </div>
                     </label>
-                    <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
+                    <label class="flex items-center gap-3 p-3 border border-gray-100 rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
                         <input type="radio" name="bizGoal" value="Lead Conversion" class="text-indigo-600 focus:ring-indigo-500">
                         <div>
-                            <p class="text-sm font-semibold text-gray-900">Convert Cold Leads</p>
-                            <p class="text-xs text-gray-500">High-converting ads copy, sales flyers & email copy</p>
+                            <p class="text-xs font-semibold text-gray-900">Convert Cold Leads</p>
+                            <p class="text-[10px] text-gray-400">High-converting ad channels & newsletters</p>
                         </div>
                     </label>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-100 gap-3">
-                <button type="button" id="prevStepBtn" onclick="navigateWizard(-1)" class="px-5 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50 transition invisible">
-                    Back
-                </button>
-                <button type="button" id="nextStepBtn" onclick="navigateWizard(1)" class="flex-1 bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-                    Next Step →
-                </button>
+            <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-100 gap-3">
+                <button type="button" id="prevStepBtn" onclick="navigateWizard(-1)" class="px-4 py-2 rounded-xl border border-gray-200 font-semibold text-xs text-gray-600 hover:bg-gray-50 transition invisible min-h-[44px]">Back</button>
+                <button type="button" id="nextStepBtn" onclick="navigateWizard(1)" class="flex-1 bg-indigo-600 text-white font-bold text-xs py-2.5 rounded-xl hover:bg-indigo-700 transition min-h-[44px]">Next Step →</button>
             </div>
         </div>
     </div>
 
-
-    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 z-40 p-5 justify-between">
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 z-40 p-5 justify-between shadow-sm">
         <div class="space-y-6">
             <div class="flex items-center gap-2.5 px-2">
-                <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center text-white font-black shadow-md shadow-indigo-200">M</div>
+                <div class="w-8 h-8 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-extrabold text-sm">M</div>
                 <div>
-                    <h1 class="font-bold text-gray-900 tracking-tight leading-none text-base">MarketMate AI</h1>
-                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">SaaS Engine</span>
+                    <h1 class="font-extrabold text-gray-900 text-sm tracking-tight">MarketMate AI</h1>
+                    <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">V4.0 Hub</span>
                 </div>
             </div>
-
             <nav class="space-y-1">
-                <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition bg-indigo-50 text-indigo-600">
-                    Dashboard
-                </button>
-                <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    AI Content Creator
-                </button>
-                <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Design Studio
-                </button>
-                <button onclick="switchTab('assistant')" data-tab="assistant" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Strategy Assistant
-                </button>
-                <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Content Calendar
-                </button>
-                <button onclick="switchTab('brandkit')" data-tab="brandkit" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Brand Kit
-                </button>
+                <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition bg-indigo-50 text-indigo-600">Dashboard Hub</button>
+                <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">Content Factory</button>
+                <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">Design Studio</button>
+                <button onclick="switchTab('intelligence')" data-tab="intelligence" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">Intelligence Hub</button>
+                <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">Gregorian Calendar</button>
             </nav>
         </div>
-
         <div class="bg-gray-50 rounded-xl p-3 border border-gray-100 flex items-center gap-3">
             <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs" id="avatarLetter">U</div>
             <div class="truncate">
-                <p class="text-xs font-semibold text-gray-800 truncate" id="sideBizName">Your Brand</p>
-                <span class="text-[10px] text-green-600 font-medium flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full inline-block"></span> AI Sync Active</span>
+                <p class="text-xs font-bold text-gray-800 truncate" id="sideBizName">Your Brand</p>
+                <span class="text-[9px] text-green-600 font-bold flex items-center gap-1">● Synced</span>
             </div>
         </div>
     </aside>
 
-
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 px-2 py-1 flex justify-around shadow-lg">
-        <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-indigo-600">
-            <span class="text-[10px] font-medium">Home</span>
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 py-2 flex justify-around shadow-lg px-2">
+        <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn mobile-tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-indigo-600 font-bold text-[10px]">
+            <span>Home</span>
         </button>
-        <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Create</span>
+        <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn mobile-tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400 font-bold text-[10px]">
+            <span>Factory</span>
         </button>
-        <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Design</span>
+        <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn mobile-tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400 font-bold text-[10px]">
+            <span>Studio</span>
         </button>
-        <button onclick="switchTab('assistant')" data-tab="assistant" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Strategy</span>
+        <button onclick="switchTab('intelligence')" data-tab="intelligence" class="tab-btn mobile-tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400 font-bold text-[10px]">
+            <span>Intel</span>
         </button>
-        <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Plan</span>
+        <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn mobile-tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400 font-bold text-[10px]">
+            <span>Plan</span>
         </button>
     </nav>
 
-
-    <main class="p-4 md:p-8 max-w-6xl mx-auto space-y-8">
-
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+    <main class="p-4 md:p-8 max-w-6xl mx-auto space-y-6">
+        <header class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
             <div>
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="headerWelcome">Welcome to MarketMate AI</h1>
-                <p class="text-sm text-gray-500">"Create Better Marketing in Minutes."</p>
+                <h1 class="text-xl md:text-2xl font-black tracking-tight text-slate-900" id="headerWelcome">Workspace Terminal</h1>
+                <p class="text-xs text-gray-400">Context-Aware AI Production Framework</p>
             </div>
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold px-2.5 py-1 bg-violet-100 text-violet-700 rounded-full flex items-center gap-1">
-                    Pro Engine Active
-                </span>
-                <button onclick="openOnboarding()" class="p-2 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 text-gray-600 transition" title="Re-tune Brand Profiles">
-                    ⚙️
-                </button>
-            </div>
+            <button onclick="openOnboarding()" class="w-full sm:w-auto px-3 py-2.5 border border-gray-200 text-xs font-bold bg-white hover:bg-gray-50 rounded-xl text-gray-600 transition flex items-center justify-center gap-2 min-h-[44px]">⚙️ Re-Tune Engine</button>
         </header>
 
         <section id="view-dashboard" class="tab-view space-y-6">
-            <div class="bg-gradient-to-r from-indigo-900 to-slate-900 rounded-2xl p-5 md:p-6 text-white shadow-xl relative overflow-hidden">
-                <div class="relative z-10 max-w-xl space-y-3">
-                    <span class="text-[11px] uppercase tracking-widest font-bold text-indigo-300">Omni-Channel Content Generator</span>
-                    <h2 class="text-xl md:text-2xl font-bold tracking-tight">What are we marketing today?</h2>
-                    <div class="flex flex-col sm:flex-row gap-2 bg-white/10 p-1.5 backdrop-blur-md rounded-xl border border-white/10">
-                        <input type="text" id="omniPrompt" placeholder="Describe a campaign, product drop, or flash sale offer..." class="bg-transparent text-white placeholder-slate-400 px-3 py-2.5 focus:outline-none flex-1 text-sm">
-                        <button onclick="handleOmniGenerate()" class="bg-indigo-600 hover:bg-indigo-500 font-semibold text-sm text-white px-5 py-2.5 rounded-lg transition shadow-md whitespace-nowrap">
-                            Generate Magic ✨
-                        </button>
+            <div class="bg-gradient-to-r from-slate-950 via-indigo-950 to-slate-950 rounded-2xl p-5 md:p-6 text-white shadow-xl">
+                <div class="max-w-xl space-y-3">
+                    <span class="text-[10px] uppercase tracking-widest font-black text-indigo-400 block">Omni Prompt Framework</span>
+                    <h2 class="text-base md:text-xl font-bold tracking-tight">Deploy context parameters instantly:</h2>
+                    <div class="flex flex-col sm:flex-row gap-2 bg-white/5 p-1.5 rounded-xl border border-white/10 backdrop-blur-sm">
+                        <input type="text" id="omniPrompt" placeholder="Describe a current campaign drop or specialized angle..." class="bg-transparent text-sm px-3 py-2.5 text-white outline-none placeholder-slate-400 flex-1 min-h-[44px]">
+                        <button onclick="handleOmniGenerate()" class="bg-indigo-600 hover:bg-indigo-500 text-xs font-bold px-4 py-2.5 rounded-lg transition whitespace-nowrap min-h-[44px]">Assemble Magic ✨</button>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
-                    <div class="text-xl">📈</div>
-                    <div>
-                        <span class="text-xs text-gray-400 font-medium block">Avg Engagement Rate</span>
-                        <span class="text-lg font-bold text-gray-800">4.82%</span>
-                    </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                    <div class="text-lg">🎯</div>
+                    <div><span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Active Offering</span><p class="text-xs font-bold text-gray-800" id="dashOffering">Loading Offering...</p></div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
-                    <div class="text-xl">📦</div>
-                    <div>
-                        <span class="text-xs text-gray-400 font-medium block">Assets Generated</span>
-                        <span class="text-lg font-bold text-gray-800" id="dashAssetCount">0 Assets</span>
-                    </div>
+                <div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                    <div class="text-lg">👥</div>
+                    <div><span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Target Matrix</span><p class="text-xs font-bold text-gray-800 truncate max-w-[160px]" id="dashAudience">Loading Audience...</p></div>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4 md:col-span-1">
-                    <div class="text-xl">💡</div>
-                    <div class="flex-1 truncate">
-                        <span class="text-xs text-gray-400 font-medium block">Daily Optimization Tip</span>
-                        <span class="text-sm font-medium text-gray-800 block truncate" id="rotatingTip">Post at 6:00 PM for optimal reach.</span>
-                    </div>
+                <div class="bg-white border border-gray-100 rounded-xl p-4 flex items-center gap-3 shadow-sm">
+                    <div class="text-lg">💡</div>
+                    <div class="truncate"><span class="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">System Vector</span><p id="rotatingTip" class="text-xs font-bold text-gray-800 truncate">Loading runtime vectors...</p></div>
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-gray-800 text-lg">Your Workspace Vault</h3>
+            <div class="space-y-2">
+                <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wider">Staged Document Ledger</h3>
+                <div id="vaultEmptyState" class="bg-white rounded-xl p-6 border border-dashed border-gray-200 text-center space-y-2">
+                    <p class="text-xs text-gray-400">No blueprints saved to structural ledger yet.</p>
                 </div>
-                <div id="vaultEmptyState" class="bg-white rounded-xl p-8 border border-dashed border-gray-200 flex flex-col items-center justify-center text-center space-y-3">
-                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400">📂</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 text-sm">Your generation library is clear</h4>
-                        <p class="text-xs text-gray-400 max-w-xs mt-0.5">Use our core features below or the generation prompt bar above to spin up automated marketing vectors.</p>
-                    </div>
-                </div>
-                <div id="vaultGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden"></div>
+                <div id="vaultGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 hidden"></div>
             </div>
         </section>
-
 
         <section id="view-creator" class="tab-view space-y-6 hidden">
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
                 <div class="bg-white rounded-xl border border-gray-100 p-5 space-y-4 lg:col-span-2 shadow-sm">
-                    <h3 class="font-bold text-gray-800 text-lg">Content Factory</h3>
+                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Engine Settings</h3>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Asset Typology</label>
-                        <select id="creatorType" onchange="updateCreatorOptions()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Social Media Caption">Social Media Caption</option>
-                            <option value="Product Description">Product Description</option>
-                            <option value="Email Newsletter">Email Newsletter Narrative</option>
-                            <option value="Blog Campaign Outlines">Blog Campaign Outlines</option>
-                            <option value="High-Density Hashtags">High-Density Hashtags Bundle</option>
-                        </select>
-                    </div>
-                    <div id="captionStyleSection" class="hidden">
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Caption Style</label>
-                        <select id="captionStyle" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="mixed">Mixed (All Types)</option>
-                            <option value="promotional">Promotional 🔥</option>
-                            <option value="educational">Educational 💡</option>
-                            <option value="engagement">Engagement 💬</option>
-                            <option value="sales">Sales Focused 💰</option>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Asset Frame Profile</label>
+                        <select id="creatorType" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-xs font-semibold text-gray-700 outline-none min-h-[44px]">
+                            <option value="Social Media Caption">Social Media Caption Loop</option>
+                            <option value="Product Ad Copy">Product Ad Copy (High-Conversion)</option>
+                            <option value="Marketing Launch Message">Marketing Launch Message Narrative</option>
+                            <option value="Viral Content Framework">Viral Content Strategy Framework</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Specific Context Parameters</label>
-                        <textarea id="creatorPrompt" rows="4" placeholder="e.g., Launching our low-carb raspberry croissant line this coming Saturday morning with free samples for first 50 guests..." class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Target Context Anchor</label>
+                        <textarea id="creatorPrompt" rows="3" placeholder="Describe the current execution angle..." class="w-full border border-gray-200 rounded-xl p-3 text-xs font-medium outline-none"></textarea>
                     </div>
-                    <button onclick="generateTextContent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-md shadow-indigo-100">
-                        Assemble Asset Layout ✨
-                    </button>
+                    <button onclick="generateTextContent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl transition shadow-md min-h-[44px]">Compile Content Vector ⚡</button>
                 </div>
 
                 <div class="lg:col-span-3 space-y-3">
-                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Live AI Output Ledger</span>
-                    <div class="bg-white rounded-xl border border-gray-100 p-6 min-h-[280px] flex flex-col justify-between relative shadow-sm" id="creatorOutputBox">
-                        <div id="creatorOutputEmpty" class="my-auto text-center space-y-2">
-                            <div class="text-2xl">🤖</div>
-                            <p class="text-sm text-gray-400">Provide parameters on the left pane and run the layout generation framework.</p>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">Live AI Output Ledger</span>
+                    <div class="bg-white rounded-xl border border-gray-100 p-4 md:p-5 min-h-[300px] flex flex-col justify-between shadow-sm relative">
+                        <div id="creatorOutputEmpty" class="my-auto text-center space-y-1">
+                            <p class="text-xs text-gray-400">Fill in settings and deploy configuration matrices.</p>
                         </div>
-                        <div id="creatorOutputLoader" class="hidden absolute inset-6 space-y-4">
-                            <div class="h-6 w-1/3 animate-shimmer rounded"></div>
-                            <div class="space-y-2">
-                                <div class="h-4 w-full animate-shimmer rounded"></div>
-                                <div class="h-4 w-5/6 animate-shimmer rounded"></div>
-                                <div class="h-4 w-4/5 animate-shimmer rounded"></div>
+                        <div id="creatorOutputContainer" class="hidden space-y-4">
+                            <div class="p-3 bg-indigo-50/50 rounded-xl border border-indigo-100/50">
+                                <span class="text-[9px] font-black uppercase text-indigo-600 tracking-wider block mb-1">Generated Output Architecture</span>
+                                <p id="textOutputPayload" class="text-xs text-gray-700 font-medium whitespace-pre-wrap leading-relaxed select-text"></p>
+                            </div>
+                            <div class="p-3 bg-amber-50/50 rounded-xl border border-amber-100/50">
+                                <span class="text-[9px] font-black uppercase text-amber-700 tracking-wider block mb-1">AI Strategic Logic Alignment Reasoning</span>
+                                <p id="textOutputReasoning" class="text-xs text-gray-600 font-medium italic leading-relaxed"></p>
                             </div>
                         </div>
-                        <div id="creatorOutputContainer" class="hidden space-y-4 text-gray-700 text-sm whitespace-pre-wrap leading-relaxed"></div>
-                        <div id="creatorActionRow" class="hidden flex items-center justify-between gap-2 border-t border-gray-50 pt-4 mt-4">
-                            <button onclick="regenerateContent()" class="text-xs font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200 rounded-lg px-3 py-2 hover:bg-indigo-50 transition flex items-center gap-1.5">
-                                🔄 Regenerate
-                            </button>
-                            <div class="flex gap-2">
-                                <button onclick="copyToClipboard('creatorOutputContainer')" class="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-500 flex items-center gap-1.5 text-xs transition font-medium">
-                                    📋 Copy Material
-                                </button>
-                                <button onclick="saveCurrentTextAsset()" class="bg-slate-900 text-white px-3 py-2 rounded-lg hover:bg-slate-800 flex items-center gap-1.5 text-xs transition font-medium">
-                                    💾 Vault Asset
-                                </button>
-                            </div>
+                        <div id="creatorActionRow" class="hidden flex items-center justify-end gap-2 border-t border-gray-50 pt-3 mt-3">
+                            <button onclick="copyToClipboard('textOutputPayload')" class="px-3 py-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-600 text-xs transition font-bold min-h-[44px]">📋 Copy Material</button>
+                            <button onclick="saveCurrentTextAsset()" class="bg-slate-950 text-white px-3 py-2.5 rounded-lg hover:bg-slate-800 text-xs transition font-bold min-h-[44px]">💾 Stage To Vault</button>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
 
         <section id="view-studio" class="tab-view space-y-6 hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-                <div class="bg-white rounded-xl border border-gray-100 p-5 space-y-4 lg:col-span-2 shadow-sm">
-                    <h3 class="font-bold text-gray-800 text-lg">Creative Matrix Canvas</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Structural Intent Profile</label>
-                        <select id="flyerLayout" onchange="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="event">Event Promotion Template</option>
-                            <option value="promo">Flash Discount Vector</option>
-                            <option value="social">Corporate Micro-Graphic</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Headline Text Overlay</label>
-                        <input type="text" id="flyerHeadline" value="GRAND REVEAL LAUNCH" oninput="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Subtext / Details Narrative</label>
-                        <input type="text" id="flyerSubtext" value="Join us this Saturday from 9 AM onwards for introductory offers." oninput="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Call To Action Capture</label>
-                        <input type="text" id="flyerCTA" value="CLAIM 20% DISCOUNT" oninput="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Background AI Theme Vector</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="flyerBgPrompt" placeholder="e.g., Abstract minimalist orange pastel circles..." class="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <button onclick="generateFlyerBackground()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-2 rounded-xl font-medium transition whitespace-nowrap">Inject Vector</button>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div class="bg-white rounded-xl border border-gray-100 p-5 space-y-4 lg:col-span-5 shadow-sm max-h-[85vh] overflow-y-auto no-scrollbar">
+                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Canvas Layer Vector Engine</h3>
                     
-                    <div class="space-y-4 border-t border-gray-100 pt-4">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700">🎨 Advanced Design Studio</h4>
-                        
-                        <div class="grid grid-cols-2 gap-3">
+                    <div class="space-y-2 border-b border-gray-100 pb-3">
+                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">1. Component Text Content</span>
+                        <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Background Color</label>
-                                <input type="color" id="bgColorPicker" value="#4F46E5" onchange="updateFlyerStyle('bgColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Accent Color</label>
-                                <input type="color" id="accentColorPicker" value="#FFFFFF" onchange="updateFlyerStyle('accentColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Gradient Mode</label>
-                            <select id="gradientMode" onchange="updateFlyerStyle('gradientMode', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="solid">Solid Color</option>
-                                <option value="linear">Linear Gradient</option>
-                                <option value="radial">Radial Gradient</option>
-                                <option value="diagonal">Diagonal Gradient</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Background Opacity</label>
-                            <div class="flex gap-2 items-center">
-                                <input type="range" min="0" max="100" value="100" id="bgOpacity" onchange="updateFlyerStyle('bgOpacity', this.value)" class="flex-1">
-                                <span id="opacityValue" class="text-xs font-mono w-8 text-right">100%</span>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Text Color</label>
-                            <input type="color" id="textColorPicker" value="#FFFFFF" onchange="updateFlyerStyle('textColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Headline Font</label>
-                            <select id="headlineFont" onchange="updateFlyerStyle('headlineFont', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="Arial">Arial Black</option>
-                                <option value="Georgia">Georgia Serif</option>
-                                <option value="Impact">Impact Heavy</option>
-                                <option value="Courier New">Courier Mono</option>
-                                <option value="Trebuchet MS">Trebuchet Modern</option>
-                                <option value="Comic Sans MS">Comic Bold</option>
-                            </select>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Headline Size</label>
-                                <input type="range" min="20" max="50" value="32" id="headlineSize" onchange="updateFlyerStyle('headlineSize', this.value)" class="w-full">
-                                <span class="text-xs text-gray-500" id="headlineSizeValue">32px</span>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Header Text</label>
+                                <input type="text" id="studioTextHead" value="FRESH CROISSANTS" oninput="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs outline-none min-h-[44px]">
                             </div>
                             <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Element Spacing</label>
-                                <input type="range" min="0" max="30" value="15" id="elementSpacing" onchange="updateFlyerStyle('elementSpacing', this.value)" class="w-full">
-                                <span class="text-xs text-gray-500" id="spacingValue">15px</span>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">CTA Action Label</label>
+                                <input type="text" id="studioTextCTA" value="ORDER NOW" oninput="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs outline-none min-h-[44px]">
                             </div>
                         </div>
-
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Upload Background Image</label>
-                            <input type="file" accept="image/*" id="bgImageUpload" onchange="uploadFlyerImage(this)" class="w-full text-xs file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:cursor-pointer hover:file:bg-indigo-700 transition">
+                            <label class="text-[9px] text-gray-400 font-bold uppercase block">Body Descriptions</label>
+                            <input type="text" id="studioTextBody" value="Baked daily using premium wild yeast cultures." oninput="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs outline-none min-h-[44px]">
                         </div>
+                    </div>
 
+                    <div class="space-y-2 border-b border-gray-100 pb-3">
+                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">2. Typography & Colors</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Font Family</label>
+                                <select id="studioFontFamily" onchange="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs bg-white outline-none min-h-[44px]">
+                                    <option value="'Plus Jakarta Sans', sans-serif">Jakarta Sans</option>
+                                    <option value="'Merriweather', serif">Merriweather</option>
+                                    <option value="'Space Mono', monospace">Space Mono</option>
+                                    <option value="'Playfair Display', serif">Playfair Luxury</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Text Color</label>
+                                <input type="color" id="studioColorText" value="#ffffff" oninput="applyStudioEdits()" class="w-full h-11 border border-gray-200 rounded-lg p-1 outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 border-b border-gray-100 pb-3">
+                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">3. Multi-Color Blend Gradient</span>
+                        <div class="grid grid-cols-3 gap-1">
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Color A</label>
+                                <input type="color" id="studioColorBgA" value="#4f46e5" oninput="applyStudioEdits()" class="w-full h-11 border border-gray-200 rounded-lg p-1">
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Color B</label>
+                                <input type="color" id="studioColorBgB" value="#7c3aed" oninput="applyStudioEdits()" class="w-full h-11 border border-gray-200 rounded-lg p-1">
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Angle</label>
+                                <select id="studioGradAngle" onchange="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-[11px] bg-white outline-none min-h-[44px]">
+                                    <option value="to br">Diagonal</option>
+                                    <option value="to r">Horizontal</option>
+                                    <option value="to b">Vertical</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 border-b border-gray-100 pb-3">
+                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">4. Elements Controls & Opacity</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Decor Opacity</label>
+                                <input type="range" id="studioOpDecor" min="0" max="1" step="0.1" value="0.2" oninput="applyStudioEdits()" class="w-full mt-3 h-10">
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Border Width</label>
+                                <select id="studioBorderWidth" onchange="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs bg-white outline-none min-h-[44px]">
+                                    <option value="0px">None</option>
+                                    <option value="2px">Thin Frame</option>
+                                    <option value="4px">Thick Frame</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">5. Image Layer Processing</span>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Brand Logo</label>
-                            <input type="file" accept="image/*" id="logoUpload" onchange="uploadLogoImage(this)" class="w-full text-xs file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:cursor-pointer hover:file:bg-purple-700 transition">
+                            <label class="text-[9px] text-gray-400 font-bold uppercase block">Image URL Asset Link</label>
+                            <input type="text" id="studioImgUrl" value="https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&auto=format&fit=crop&q=60" oninput="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs outline-none min-h-[44px]">
                         </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Border Style</label>
-                            <select id="borderStyle" onchange="updateFlyerStyle('borderStyle', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="none">No Border</option>
-                                <option value="solid">Solid Border</option>
-                                <option value="dashed">Dashed Border</option>
-                                <option value="double">Double Border</option>
-                                <option value="rounded">Rounded Heavy</option>
-                            </select>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Height Scale</label>
+                                <select id="studioImgHeight" onchange="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs bg-white outline-none min-h-[44px]">
+                                    <option value="120px">Compact</option>
+                                    <option value="160px" selected>Balanced</option>
+                                    <option value="200px">Deep View</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="text-[9px] text-gray-400 font-bold uppercase block">Fitting</label>
+                                <select id="studioImgFit" onchange="applyStudioEdits()" class="w-full border border-gray-200 rounded-lg p-2.5 text-xs bg-white outline-none min-h-[44px]">
+                                    <option value="cover">Cover Crop</option>
+                                    <option value="contain">Contain Fit</option>
+                                </select>
+                            </div>
                         </div>
-
-                        <button onclick="resetFlyerDesign()" class="w-full text-xs font-semibold py-2 px-3 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition">
-                            ↻ Reset to Default
-                        </button>
                     </div>
                 </div>
 
-                <div class="lg:col-span-3 space-y-4">
-                    <div id="flyerRenderCanvas" class="aspect-[4/5] max-w-[380px] mx-auto bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl shadow-xl p-8 flex flex-col justify-between text-white relative overflow-hidden transition-all duration-300">
-                        <div id="canvasBgDecoration" class="absolute inset-0 z-0 opacity-20 pointer-events-none flex items-center justify-center">
-                            <div class="w-72 h-72 rounded-full border-[16px] border-white animate-pulse"></div>
+                <div class="lg:col-span-7 space-y-4 flex flex-col items-center justify-center">
+                    <div id="flyerCanvasContainer" class="w-full max-w-[340px] aspect-[4/5] rounded-2xl shadow-xl p-6 flex flex-col justify-between relative overflow-hidden transition-all duration-200 border-indigo-500/20" style="background: linear-gradient(to bottom right, #4f46e5, #7c3aed); border-width: 0px;">
+                        <div id="canvasDecorRing" class="absolute inset-0 opacity-20 pointer-events-none flex items-center justify-center z-0">
+                            <div class="w-60 h-60 rounded-full border-[12px] border-white animate-pulse"></div>
                         </div>
-                        
                         <div class="z-10 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10" id="canvasHeaderTag">Exclusive Invitation</span>
-                            <div class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></div>
+                            <span id="canvasBrandTag" class="text-[9px] font-black uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md">MarketMate Asset</span>
+                            <span class="w-2 h-2 rounded-full bg-white"></span>
                         </div>
-
-                        <div class="z-10 space-y-3 my-auto py-6">
-                            <h2 class="text-3xl font-black tracking-tight leading-tight uppercase drop-shadow-md" id="canvasHeadline">GRAND REVEAL LAUNCH</h2>
-                            <p class="text-sm text-indigo-100/90 leading-relaxed font-medium" id="canvasSubtext">Join us this Saturday from 9 AM onwards for introductory offers.</p>
+                        <div id="canvasImgWrapper" class="w-full mt-4 rounded-xl overflow-hidden shadow-inner z-10 relative bg-slate-900/10">
+                            <img id="canvasImgNode" src="" alt="Dynamic Studio Graphic" class="w-full h-full object-cover">
                         </div>
-
-                        <div class="z-10 pt-4 border-t border-white/20 flex flex-col gap-3">
-                            <div class="bg-white text-indigo-900 font-bold text-center py-3 rounded-xl text-xs tracking-wider uppercase shadow-lg transform active:scale-95 transition cursor-pointer" id="canvasCTA">
-                                CLAIM 20% DISCOUNT
-                            </div>
-                            <span class="text-[9px] text-center text-indigo-200 tracking-wide block" id="canvasFooterLabel">MarketMate AI Verified Asset Layout</span>
+                        <div class="z-10 space-y-2 my-auto py-4">
+                            <h2 id="canvasTextHead" class="text-xl font-black tracking-tight uppercase leading-none break-words">FRESH CROISSANTS</h2>
+                            <p id="canvasTextBody" class="text-xs text-white/90 leading-relaxed font-medium break-words">Baked daily using premium wild yeast cultures.</p>
+                        </div>
+                        <div class="z-10 pt-3 border-t border-white/20 flex flex-col gap-2">
+                            <div id="canvasTextCTA" class="bg-white text-slate-900 font-extrabold text-center py-2.5 rounded-xl text-xs tracking-wider uppercase shadow-md">ORDER NOW</div>
                         </div>
                     </div>
-
-                    <div class="flex items-center justify-center gap-3 max-w-[380px] mx-auto">
-                        <button onclick="downloadFlyerAsset()" class="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold py-2.5 rounded-xl bg-white transition flex items-center justify-center gap-2 shadow-sm">
-                            📥 Export PNG Layer
-                        </button>
-                        <button onclick="vaultFlyerAsset()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
-                            ❤️ Save Blueprint
-                        </button>
+                    <div class="flex gap-2 w-full max-w-[340px]">
+                        <button onclick="downloadFlyerAsset()" class="flex-1 bg-white border border-gray-200 text-gray-700 text-xs font-bold py-3 rounded-xl shadow-sm min-h-[44px]">📥 Export PNG</button>
+                        <button onclick="vaultFlyerAsset()" class="flex-1 bg-slate-950 hover:bg-slate-900 text-white text-xs font-bold py-3 rounded-xl shadow-sm min-h-[44px]">❤️ Save Matrix</button>
                     </div>
                 </div>
             </div>
         </section>
 
-
-        <section id="view-assistant" class="tab-view space-y-6 hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm">
-                        <h3 class="font-bold text-gray-800 text-lg mb-2">📊 Marketing Intelligence Hub</h3>
-                        <p class="text-xs text-gray-400 mb-4">AI-powered insights tailored to your business goals and target audience</p>
-                        
-                        <div class="space-y-4" id="intelligenceInsights">
-                            <!-- Dynamically populated with insights -->
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="strategyCardGrid">
-                        <!-- Strategy cards will be dynamically added here -->
-                    </div>
+        <section id="view-intelligence" class="tab-view space-y-6 hidden">
+            <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-6">
+                <div>
+                    <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Marketing Intelligence Hub</h3>
+                    <p class="text-xs text-gray-400">Contextual positioning blueprints calculated via your target brand coordinates.</p>
                 </div>
-
-                <div class="space-y-4">
-                    <div class="bg-gradient-to-br from-indigo-50 to-violet-50 rounded-xl border border-indigo-100 p-5 shadow-sm">
-                        <h4 class="font-bold text-sm text-indigo-900 mb-3">🎯 Your Profile</h4>
-                        <div class="space-y-2 text-xs">
-                            <div>
-                                <span class="text-gray-600">Brand:</span>
-                                <span class="font-semibold text-gray-900" id="intelBrandName">Loading...</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-600">Industry:</span>
-                                <span class="font-semibold text-gray-900" id="intelIndustry">Loading...</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-600">Audience:</span>
-                                <span class="font-semibold text-gray-900" id="intelAudience">Loading...</span>
-                            </div>
-                            <div>
-                                <span class="text-gray-600">Goal:</span>
-                                <span class="font-semibold text-gray-900" id="intelGoal">Loading...</span>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl border border-indigo-50 bg-indigo-50/20 space-y-2">
+                        <span class="text-[9px] font-black text-indigo-600 uppercase tracking-widest block">Brand Growth Recommendations</span>
+                        <h4 class="font-bold text-gray-800 text-sm">Velocity Sequencing Strategy</h4>
+                        <p id="intelGrowth" class="text-xs text-gray-600 leading-relaxed"></p>
                     </div>
-
-                    <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-100 p-5 shadow-sm">
-                        <h4 class="font-bold text-sm text-amber-900 mb-3">💡 Quick Tips</h4>
-                        <div class="space-y-2" id="quickTips">
-                            <!-- Tips populated dynamically -->
-                        </div>
+                    <div class="p-4 rounded-xl border border-violet-50 bg-violet-50/20 space-y-2">
+                        <span class="text-[9px] font-black text-violet-600 uppercase tracking-widest block">Target Audience Insights</span>
+                        <h4 class="font-bold text-gray-800 text-sm">Psychographic Persona Breakdown</h4>
+                        <p id="intelAudience" class="text-xs text-gray-600 leading-relaxed"></p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-amber-50 bg-amber-50/20 space-y-2">
+                        <span class="text-[9px] font-black text-amber-600 uppercase tracking-widest block">Competitor Positioning Gaps</span>
+                        <h4 class="font-bold text-gray-800 text-sm">Alternative Narrative Framing</h4>
+                        <p id="intelCompetitors" class="text-xs text-gray-600 leading-relaxed"></p>
+                    </div>
+                    <div class="p-4 rounded-xl border border-emerald-50 bg-emerald-50/20 space-y-2">
+                        <span class="text-[9px] font-black text-emerald-600 uppercase tracking-widest block">Conversion Drivers Optimization</span>
+                        <h4 class="font-bold text-gray-800 text-sm">High-Intent Friction Reduction</h4>
+                        <p id="intelConversion" class="text-xs text-gray-600 leading-relaxed"></p>
                     </div>
                 </div>
             </div>
         </section>
-
 
         <section id="view-calendar" class="tab-view space-y-6 hidden">
-            <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="bg-white rounded-xl border border-gray-100 p-4 shadow-sm space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-50 pb-3">
                     <div>
-                        <h3 class="font-bold text-gray-800 text-lg">📅 Content Calendar</h3>
-                        <p class="text-xs text-gray-400">Plan and schedule your content across the full year</p>
+                        <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Gregorian Calendar Engine</h3>
+                        <p class="text-xs text-gray-400">Schedule real-time context nodes into precise target dates.</p>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="previousMonth()" class="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-sm font-medium transition">← Prev</button>
-                        <button onclick="todayMonth()" class="px-4 py-2 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-200 text-sm font-medium transition">Today</button>
-                        <button onclick="nextMonth()" class="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 text-sm font-medium transition">Next →</button>
+                    <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto">
+                        <button onclick="shiftMonth(-1)" class="p-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-xs font-bold min-h-[44px] px-4">◀</button>
+                        <span id="calendarMonthYearLabel" class="text-xs font-black text-gray-800 uppercase tracking-wider min-w-[100px] text-center">June 2026</span>
+                        <button onclick="shiftMonth(1)" class="p-2.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-xs font-bold min-h-[44px] px-4">▶</button>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                    <h4 class="text-lg font-bold text-gray-800" id="calendarMonthYear">Loading...</h4>
-                    <select id="monthYearSelect" onchange="jumpToMonth(this.value)" class="border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                        <!-- Populated dynamically -->
-                    </select>
-                </div>
-
-                <div class="border border-gray-100 rounded-xl overflow-hidden bg-white">
-                    <div class="grid grid-cols-7 bg-gradient-to-r from-indigo-50 to-violet-50 text-center py-3 text-xs font-bold uppercase tracking-wider text-gray-700 border-b border-gray-100">
-                        <div>Sunday</div>
-                        <div>Monday</div>
-                        <div>Tuesday</div>
-                        <div>Wednesday</div>
-                        <div>Thursday</div>
-                        <div>Friday</div>
-                        <div>Saturday</div>
+                <div class="border border-gray-100 rounded-xl overflow-hidden">
+                    <div class="grid grid-cols-7 bg-slate-900 text-center py-2 text-[10px] font-bold uppercase tracking-widest text-white/80">
+                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                     </div>
-                    <div class="grid grid-cols-7 auto-rows-max bg-white divide-x divide-y divide-gray-100" id="calendarDaysGrid"></div>
-                </div>
-
-                <div id="selectedDateInfo" class="hidden bg-indigo-50 border border-indigo-200 rounded-xl p-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <h4 class="font-bold text-indigo-900" id="selectedDateTitle">Loading...</h4>
-                        <button onclick="closeSelectedDate()" class="text-indigo-600 hover:text-indigo-800 text-lg">✕</button>
-                    </div>
-                    <div id="selectedDateContent" class="space-y-2"></div>
+                    <div class="grid grid-cols-7 bg-white divide-x divide-y divide-gray-100" id="gregorianDaysGrid"></div>
                 </div>
             </div>
-        </section>
 
-
-        <section id="view-brandkit" class="tab-view space-y-6 hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">🎨 Palette Archetypes</h4>
-                    <div class="space-y-2.5" id="kitColorContainer"></div>
+            <div id="schedulerPanel" class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-3 hidden">
+                <div class="flex items-center justify-between border-b border-gray-50 pb-2">
+                    <span id="schedulerDateLabel" class="text-xs font-black text-indigo-600 uppercase tracking-wider">Managing Content Plan</span>
+                    <button onclick="document.getElementById('schedulerPanel').classList.add('hidden')" class="text-gray-400 text-xs p-2">✕ Close</button>
                 </div>
-
-                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">🔤 Typography Pairings</h4>
-                    <div class="p-4 border border-gray-50 rounded-xl space-y-3 bg-gray-50/30">
-                        <div>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase block mb-1">Primary Display Header</span>
-                            <p class="text-xl font-bold text-gray-900" id="kitFontHeader">Plus Jakarta Sans</p>
-                        </div>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="schedulerInputTask" placeholder="Enter campaign plan details..." class="flex-1 border border-gray-200 text-xs px-3 py-2.5 rounded-lg outline-none min-h-[44px]">
+                    <button onclick="commitCalendarTask()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition min-h-[44px]">Map Plan</button>
                 </div>
-
-                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">💬 Voice Tone Constraints</h4>
-                    <div class="space-y-2" id="kitVoiceContainer"></div>
-                </div>
+                <div class="space-y-1 pt-1" id="schedulerTasksList"></div>
             </div>
         </section>
-
     </main>
 
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
-</html> 
+</html>

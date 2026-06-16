@@ -29,3 +29,159 @@ body {
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite linear;
 }
+/* ==========================================================================
+   MARKETMATE GLOBAL MOBILE OPTIMIZATION SHEET
+   ========================================================================== */
+
+/* Baseline Mobile-First Enhancements */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    /* Prevents default browser callout overlays on long-press */
+    -webkit-touch-callout: none;
+    /* Eliminates grey tap flash highlight on iOS Safari */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure accessible interactive tap areas on small viewports */
+button, 
+select, 
+input, 
+a,
+.cursor-pointer {
+    min-height: 44px; /* Apple iOS Human Interface Guidelines Standard */
+    touch-action: manipulation; /* Disables double-tap zoom to eliminate 300ms latency click delays */
+}
+
+/* Fix text input zooming issues on iOS when font-size is below 16px */
+@media (max-width: 767px) {
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+}
+
+/* ==========================================================================
+   TARGETED RESPONSIVE BREAKPOINTS (SMARTPHONES)
+   ========================================================================== */
+@media screen and (max-width: 640px) {
+
+    /* --- Workspace Layout Structure --- */
+    body {
+        padding-bottom: 90px !important; /* Prevents main content clipping behind fixed bottom mobile nav */
+        padding-left: 0 !important;       /* Overrides desktop sidebar left margin padding offsets */
+    }
+
+    main {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* --- Onboarding Modal Framework --- */
+    #onboardingModal {
+        padding: 0.75rem !important;
+    }
+
+    #onboardingModal > div {
+        max-height: 85vh !important;
+        width: 100% !important;
+        margin: 0 auto !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    /* --- Bottom Navigation Bar Optimization --- */
+    nav.md\:hidden {
+        height: 70px !important;
+        padding-bottom: env(safe-area-inset-bottom, 12px) !important; /* Graceful rendering for phone home bars */
+        background-color: rgba(255, 255, 255, 0.96) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border-top: 1px solid rgba(243, 244, 246, 1) !important;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.03) !important;
+    }
+
+    .mobile-tab-btn {
+        flex: 1 !important;
+        min-height: 50px !important;
+        justify-content: center !important;
+        border-radius: 0.5rem !important;
+        transition: background-color 0.15s ease, color 0.15s ease !important;
+    }
+
+    .mobile-tab-btn:active {
+        background-color: rgba(243, 244, 246, 0.7) !important; /* Native tactile action indicator */
+    }
+
+    /* --- Component Cards & Vault Grids --- */
+    .grid {
+        gap: 0.75rem !important;
+    }
+
+    #vaultGrid {
+        grid-template-cols: 1fr !important; /* Force items to single-column blocks stack */
+    }
+
+    /* --- Interactive Canvas Layer Scaling --- */
+    #flyerCanvasContainer {
+        width: 100% !important;
+        max-width: 290px !important; /* Prevent viewport overflow limits on narrow phone widths */
+        margin: 0 auto !important;
+        transform: scale(0.98);
+    }
+
+    /* --- Gregorian Grid Engine Layout --- */
+    #gregorianDaysGrid {
+        grid-template-columns: repeat(7, 1fr) !important;
+    }
+
+    #gregorianDaysGrid > div {
+        min-height: 52px !important; /* Compact balanced dimension ratio grid nodes for mobile displays */
+        padding: 0.25rem !important;
+    }
+
+    #gregorianDaysGrid span {
+        font-size: 9px !important;
+    }
+
+    /* Hidden element truncation configurations for mobile calendar lists */
+    #gregorianDaysGrid div.space-y-0\.5,
+    #gregorianDaysGrid div.mt-1 {
+        max-height: 32px !important;
+        overflow: hidden !important;
+    }
+
+    /* --- Context Panel Scheduler --- */
+    #schedulerPanel {
+        border-radius: 1rem !important;
+        padding: 1rem !important;
+        margin-top: 1rem !important;
+    }
+
+    #schedulerPanel input[type="text"] {
+        margin-bottom: 0.5rem !important;
+        width: 100% !important;
+    }
+
+    #schedulerPanel button {
+        width: 100% !important;
+    }
+}
+
+/* ==========================================================================
+   SUPPORT FOR ULTRA-SMALL SCREENS (e.g., iPhone SE)
+   ========================================================================== */
+@media screen and (max-width: 360px) {
+    #flyerCanvasContainer {
+        max-width: 260px !important;
+    }
+    
+    #calendarMonthYearLabel {
+        font-size: 11px !important;
+        min-width: 70px !important;
+    }
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdVantage AI - Copy Generator & Split Tester</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #090d16;
+        }
+        .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+<body class="h-full text-slate-200 flex flex-col overflow-hidden">
+
+    <header class="h-16 shrink-0 border-b border-slate-800 bg-slate-900/80 backdrop-blur px-4 md:px-6 flex items-center justify-between z-30">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+            </div>
+            <div>
+                <h1 class="text-sm md:text-base font-bold text-white tracking-wide flex items-center gap-2">
+                    AdVantage AI <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">A/B Pro</span>
+                </h1>
+                <p class="text-[11px] text-slate-400 hidden sm:block">Copywriting Optimization & Split Validation Hub</p>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <div class="relative flex items-center">
+                <span class="absolute left-3 text-slate-500 text-xs font-bold uppercase tracking-wider">Anthropic Key:</span>
+                <input type="password" id="api-key-input" placeholder="••••••••••••••••••••" class="bg-slate-950 border border-slate-800 rounded-xl pl-28 pr-3 py-1.5 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500 w-48 md:w-64 transition">
+            </div>
+            <button onclick="clearWorkspace()" class="p-2 text-slate-400 hover:text-red-400 hover:bg-slate-800/50 rounded-xl transition cursor-pointer" title="Reset Workspace Cache">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 flex flex-col lg:flex-row overflow-hidden relative">
+        
+        <aside class="w-full lg:w-[400px] border-b lg:border-b-0 lg:border-r border-slate-800 bg-slate-900/40 p-4 md:p-6 overflow-y-auto custom-scroll shrink-0">
+            <div class="space-y-5">
+                <div class="border-b border-slate-800 pb-3">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-300">Campaign Inputs</h2>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Define your target offering constraints below.</p>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1.5">Product / Brand Name</label>
+                    <input type="text" id="input-prod-name" placeholder="e.g., AuraSleep Mask" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition">
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1.5">Product Description & Core Angle</label>
+                    <textarea id="input-prod-desc" rows="5" placeholder="Detail the core value proposition, hook, target audience profile, emotional anchors, or functional features..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition resize-none custom-scroll"></textarea>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1.5">Primary Target Canvas Layout</label>
+                    <div class="grid grid-cols-3 gap-2" id="platform-selector-group">
+                        <button onclick="setPlatformChannel('facebook')" data-channel="facebook" class="channel-btn flex flex-col items-center justify-center p-2.5 bg-slate-950 border border-slate-800 hover:border-slate-700 rounded-xl transition cursor-pointer text-slate-400">
+                            <i data-lucide="facebook" class="w-4 h-4 mb-1"></i>
+                            <span class="text-[10px] font-semibold">Facebook</span>
+                        </button>
+                        <button onclick="setPlatformChannel('google')" data-channel="google" class="channel-btn flex flex-col items-center justify-center p-2.5 bg-slate-950 border border-slate-800 hover:border-slate-700 rounded-xl transition cursor-pointer text-slate-400">
+                            <i data-lucide="search" class="w-4 h-4 mb-1"></i>
+                            <span class="text-[10px] font-semibold">Google Text</span>
+                        </button>
+                        <button onclick="setPlatformChannel('instagram')" data-channel="instagram" class="channel-btn flex flex-col items-center justify-center p-2.5 bg-slate-950 border border-slate-800 hover:border-slate-700 rounded-xl transition cursor-pointer text-slate-400">
+                            <i data-lucide="instagram" class="w-4 h-4 mb-1"></i>
+                            <span class="text-[10px] font-semibold">Instagram</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-1.5">Copy Variant Tonal Directives</label>
+                    <select id="input-prod-tone" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+                        <option value="conversion">Direct Response (Problem & Solution Anchor)</option>
+                        <option value="story">Narrative / Hook First Storytelling</option>
+                        <option value="bold">Bold & Provocative (Pattern Interrupt)</option>
+                        <option value="benefit">Feature-to-Benefit Transformation Matrix</option>
+                    </select>
+                </div>
+
+                <button onclick="generateAdCopyVariants()" class="w-full flex items-center justify-center space-x-2 py-2.5 px-4 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-lg shadow-indigo-600/20 transition cursor-pointer group">
+                    <i data-lucide="cpu" class="w-4 h-4 text-indigo-200 group-hover:rotate-12 transition"></i>
+                    <span>Generate Split Variants</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 bg-[#090d16] p-4 md:p-6 overflow-y-auto custom-scroll flex flex-col space-y-6 z-10">
+            
+            <div id="analytics-section" class="hidden bg-slate-900/60 border border-slate-800 rounded-2xl p-4 md:p-5">
+                <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-2">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-300">A/B Tracking Matrix Real-Time Dashboard</h3>
+                    </div>
+                    <span class="text-[10px] text-slate-500">Live Traffic Allocation: Click-Through Rate (CTR) Summary</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                    <div class="bg-slate-950/80 border border-slate-800 p-3 rounded-xl flex flex-col justify-between">

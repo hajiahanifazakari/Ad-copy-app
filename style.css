@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-main: #090d16;
+    --bg-surface: #0f172a;
+    --bg-card: #111c30;
+    --border-color: #1e293b;
+    --color-primary: #4f46e5;
+    --color-primary-hover: #4338ca;
+    --color-accent: #06b6d4;
+    --text-main: #f1f5f9;
+    --text-muted: #64748b;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Custom functional utility layouts for nested canvas areas */
+.custom-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: var(--bg-surface);
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 4px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background: #475569;
+}
+
+/* Card Selection Glow Metrics */
+.winner-card-glow {
+    border-color: #f59e0b !important;
+    box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.08), 
+                0 8px 10px -6px rgba(245, 158, 11, 0.08);
+}
+
+/* Asynchronous API Stream Loader Animation Framework */
+@keyframes pulseGlow {
+    0%, 100% {
+        opacity: 0.6;
+        box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.2);
+    }
+    50% {
+        opacity: 1;
+        box-shadow: 0 0 15px 4px rgba(79, 70, 229, 0.4);
+    }
+}
+
+.api-loading-pulse {
+    animation: pulseGlow 1.8s infinite ease-in-out;
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 200% 100%;
+}
+
+/* Pattern interruptions utility rules */
+.pattern-bg {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+    background-size: 24px 24px;
+}

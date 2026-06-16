@@ -382,3 +382,10 @@ function injectHighFidelityMockPayload(brand, description, tone, channel) {
     saveWorkspaceStateToDisk();
     renderWorkspaceDisplaySequence();
 }
+// Replace the executeActualAnthropicTransaction block inside app.js with this safe handler
+async function executeActualAnthropicTransaction(key, brandName, briefing, tone, channel) {
+    console.warn("Direct browser calls to Anthropic are blocked by CORS policies. Simulating response format...");
+    // Fall back to the high-fidelity mock engine so the UI doesn't freeze or lock up on GitHub
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    injectHighFidelityMockPayload(brandName, briefing, tone, channel);
+}

@@ -1,518 +1,861 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarketMate AI - Create Better Marketing in Minutes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MarketMate AI - Create Better Marketing in Minutes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --mm-bg:#0a0a0f;--mm-surface:#13131a;--mm-card:#1a1a24;--mm-border:#2a2a3a;
+  --mm-accent:#7c6dfa;--mm-accent2:#a78bfa;--mm-accent3:#06d6a0;
+  --mm-text:#f0eeff;--mm-muted:#8888aa;--mm-danger:#ff6b6b;
+}
+html,body{min-height:100vh;background:var(--mm-bg);color:var(--mm-text);font-family:'Inter',system-ui,sans-serif;overflow-x:hidden}
+.app{display:flex;flex-direction:column;min-height:100vh}
+
+/* ── Onboarding ── */
+.onboard-overlay{position:fixed;inset:0;background:rgba(10,10,15,.97);z-index:1000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.onboard-card{background:var(--mm-card);border:1px solid var(--mm-border);border-radius:20px;padding:2rem;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
+.onboard-card h2{font-size:1.1rem;font-weight:700;margin-bottom:.2rem}
+.onboard-card>p{font-size:.8rem;color:var(--mm-muted);margin-bottom:1.25rem}
+.step-bar{display:flex;gap:.5rem;margin-bottom:1.5rem}
+.step-dot{height:4px;flex:1;border-radius:2px;background:var(--mm-border);transition:.3s}
+.step-dot.active{background:var(--mm-accent)}
+.step-dot.done{background:var(--mm-accent3)}
+.form-field{margin-bottom:1rem}
+.form-field label{display:block;font-size:.78rem;color:var(--mm-muted);margin-bottom:.4rem;font-weight:500}
+.form-field input,.form-field select,.form-field textarea{width:100%;background:#0f0f18;border:1px solid var(--mm-border);border-radius:10px;padding:.65rem .9rem;color:var(--mm-text);font-size:.85rem;outline:none;transition:.2s;font-family:'Inter',sans-serif}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--mm-accent);box-shadow:0 0 0 3px rgba(124,109,250,.15)}
+.form-field select option{background:#13131a}
+.chip-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.25rem}
+.chip{background:#0f0f18;border:1px solid var(--mm-border);border-radius:10px;padding:.65rem .9rem;font-size:.8rem;color:var(--mm-muted);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:.5rem;user-select:none}
+.chip:hover{border-color:var(--mm-accent);color:var(--mm-accent2)}
+.chip.selected{border-color:var(--mm-accent);background:rgba(124,109,250,.12);color:var(--mm-accent2)}
+.chip i{font-size:16px}
+.goal-card{background:#0f0f18;border:1px solid var(--mm-border);border-radius:12px;padding:1rem;cursor:pointer;transition:.2s;margin-bottom:.5rem;user-select:none}
+.goal-card:hover{border-color:var(--mm-accent)}
+.goal-card.selected{border-color:var(--mm-accent);background:rgba(124,109,250,.1)}
+.goal-card h4{font-size:.85rem;font-weight:600;margin-bottom:.25rem}
+.goal-card p{font-size:.75rem;color:var(--mm-muted)}
+.onboard-actions{display:flex;justify-content:space-between;margin-top:1.5rem;gap:.75rem}
+
+/* ── Buttons ── */
+.btn{border:none;border-radius:10px;padding:.7rem 1.5rem;font-size:.85rem;font-weight:600;cursor:pointer;transition:.2s;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,#7c6dfa,#a78bfa);color:#fff}
+.btn-primary:hover{opacity:.88;transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid var(--mm-border);color:var(--mm-muted)}
+.btn-ghost:hover{border-color:var(--mm-accent);color:var(--mm-accent2)}
+.btn-sm{padding:.45rem 1rem;font-size:.78rem}
+.icon-btn{background:none;border:1px solid var(--mm-border);border-radius:8px;padding:.35rem .5rem;color:var(--mm-muted);cursor:pointer;transition:.2s;font-size:14px;display:flex;align-items:center;font-family:'Inter',sans-serif}
+.icon-btn:hover{border-color:var(--mm-accent);color:var(--mm-accent2)}
+.generate-btn{background:linear-gradient(135deg,#7c6dfa,#a78bfa);color:#fff;border:none;border-radius:12px;padding:.75rem 1.25rem;font-size:.85rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.5rem;white-space:nowrap;transition:.2s;font-family:'Inter',sans-serif}
+.generate-btn:hover{opacity:.9;transform:translateY(-1px)}
+.generate-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ── Layout ── */
+.main-layout{display:flex;flex:1}
+.sidebar{width:210px;background:var(--mm-surface);border-right:1px solid var(--mm-border);padding:1rem;display:flex;flex-direction:column;gap:.2rem;flex-shrink:0;min-height:100vh}
+.sidebar-brand{display:flex;align-items:center;gap:.6rem;padding:.5rem .25rem 1.25rem;border-bottom:1px solid var(--mm-border);margin-bottom:.5rem}
+.brand-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#7c6dfa,#a78bfa);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:800;color:#fff;flex-shrink:0}
+.brand-name{font-size:.88rem;font-weight:700}
+.brand-sub{font-size:.65rem;color:var(--mm-accent);font-weight:600;letter-spacing:.04em}
+.nav-item{display:flex;align-items:center;gap:.65rem;padding:.6rem .75rem;border-radius:9px;font-size:.82rem;font-weight:500;cursor:pointer;transition:.2s;color:var(--mm-muted);border:none;background:none;width:100%;text-align:left;font-family:'Inter',sans-serif}
+.nav-item:hover{background:var(--mm-card);color:var(--mm-text)}
+.nav-item.active{background:rgba(124,109,250,.15);color:var(--mm-accent2)}
+.nav-item i{font-size:18px;flex-shrink:0}
+.sidebar-footer{background:#0f0f18;border:1px solid var(--mm-border);border-radius:10px;padding:.7rem .8rem;font-size:.72rem;margin-top:auto}
+.content{flex:1;overflow-y:auto;padding:1.75rem;min-width:0}
+
+/* ── Top bar ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:.75rem}
+.top-bar h1{font-size:1.35rem;font-weight:800}
+.badge{background:rgba(6,214,160,.12);color:#06d6a0;font-size:.7rem;font-weight:700;padding:.22rem .7rem;border-radius:20px;border:1px solid rgba(6,214,160,.25);letter-spacing:.04em}
+
+/* ── Stats ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.stat-card{background:var(--mm-card);border:1px solid var(--mm-border);border-radius:14px;padding:1rem}
+.stat-card .s-label{font-size:.72rem;color:var(--mm-muted);margin-bottom:.35rem;font-weight:500}
+.stat-card .s-value{font-size:1.4rem;font-weight:800}
+.stat-card .s-sub{font-size:.7rem;color:var(--mm-accent3);margin-top:.15rem}
+
+/* ── Sections ── */
+.section{background:var(--mm-card);border:1px solid var(--mm-border);border-radius:16px;padding:1.25rem;margin-bottom:1.25rem}
+.section-title{font-size:.9rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;color:var(--mm-text)}
+.section-title i{color:var(--mm-accent);font-size:18px}
+
+/* ── Inputs ── */
+.prompt-row{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap}
+.prompt-row input{flex:1;min-width:180px;background:#0f0f18;border:1px solid var(--mm-border);border-radius:12px;padding:.75rem 1rem;color:var(--mm-text);font-size:.85rem;outline:none;transition:.2s;font-family:'Inter',sans-serif}
+.prompt-row input:focus{border-color:var(--mm-accent);box-shadow:0 0 0 3px rgba(124,109,250,.12)}
+.select-field{background:#0f0f18;border:1px solid var(--mm-border);border-radius:10px;padding:.65rem .9rem;color:var(--mm-text);font-size:.82rem;outline:none;width:100%;transition:.2s;font-family:'Inter',sans-serif}
+.select-field:focus{border-color:var(--mm-accent)}
+.select-field option{background:#13131a}
+
+/* ── AI Output ── */
+.ai-output{background:#0c0c14;border:1px solid var(--mm-border);border-radius:12px;padding:1rem;min-height:130px;font-size:.83rem;line-height:1.75;color:var(--mm-text);white-space:pre-wrap;word-break:break-word}
+.ai-placeholder{color:var(--mm-muted);font-style:italic}
+.output-actions{display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap}
+
+/* ── Vault ── */
+.vault-item{background:#0f0f18;border:1px solid var(--mm-border);border-radius:12px;padding:.9rem 1rem;display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.6rem}
+.vi-text{font-size:.8rem;line-height:1.55;color:var(--mm-text);flex:1;word-break:break-word}
+.vi-meta{font-size:.7rem;color:var(--mm-muted);margin-top:.3rem}
+.vi-actions{display:flex;gap:.4rem;flex-shrink:0}
+.empty-state{text-align:center;padding:2.5rem 1rem;color:var(--mm-muted)}
+.empty-state i{font-size:38px;display:block;margin-bottom:.75rem;opacity:.35}
+.empty-state p{font-size:.82rem}
+
+/* ── Content Factory ── */
+.cf-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+
+/* ── Design ── */
+.design-canvas{background:#0c0c14;border:1px solid var(--mm-border);border-radius:14px;min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.design-preview{width:100%;padding:2.5rem 2rem;text-align:center;position:relative}
+.dp-eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.14em;margin-bottom:.75rem;opacity:.75}
+.dp-title{font-size:1.6rem;font-weight:800;line-height:1.15;margin-bottom:.6rem;letter-spacing:-.02em}
+.dp-sub{font-size:.82rem;opacity:.7;margin-bottom:1.2rem}
+.dp-cta{border:none;padding:.6rem 1.75rem;border-radius:8px;font-weight:700;font-size:.82rem;cursor:pointer;font-family:'Inter',sans-serif}
+.dp-badge{position:absolute;bottom:.75rem;right:.9rem;font-size:.62rem;opacity:.45;color:#fff}
+
+/* ── Calendar ── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-head{font-size:.68rem;text-align:center;color:var(--mm-muted);padding:.4rem;font-weight:600}
+.cal-day{border-radius:8px;background:#0f0f18;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.78rem;cursor:pointer;transition:.2s;position:relative;border:1px solid transparent;min-height:38px}
+.cal-day:hover{border-color:var(--mm-accent);background:rgba(124,109,250,.08)}
+.cal-day.today{border-color:var(--mm-accent);background:rgba(124,109,250,.2);color:var(--mm-accent2);font-weight:700}
+.cal-day.has-event::after{content:'';position:absolute;bottom:4px;width:4px;height:4px;border-radius:50%;background:var(--mm-accent3)}
+.cal-day.empty{opacity:0;pointer-events:none}
+.section-tabs{display:flex;gap:.4rem;margin-bottom:1rem}
+.tab-btn{background:none;border:1px solid var(--mm-border);border-radius:8px;padding:.4rem .9rem;font-size:.78rem;color:var(--mm-muted);cursor:pointer;transition:.2s;font-family:'Inter',sans-serif}
+.tab-btn.active{background:rgba(124,109,250,.15);border-color:var(--mm-accent);color:var(--mm-accent2)}
+
+/* ── Strategy ── */
+.strategy-card{background:#0f0f18;border:1px solid var(--mm-border);border-radius:12px;padding:1rem;margin-bottom:.65rem}
+.sc-tag{font-size:.68rem;font-weight:700;padding:.2rem .65rem;border-radius:6px;display:inline-block;margin-bottom:.5rem;letter-spacing:.04em}
+.tag-growth{background:rgba(6,214,160,.15);color:#06d6a0}
+.tag-market{background:rgba(124,109,250,.15);color:var(--mm-accent2)}
+.tag-brand{background:rgba(255,107,107,.15);color:#ff6b6b}
+.strategy-card h4{font-size:.85rem;font-weight:600;margin-bottom:.35rem}
+.strategy-card p{font-size:.78rem;color:var(--mm-muted);line-height:1.65}
+
+/* ── Brand Kit ── */
+.palette-row{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.pal-option{display:flex;gap:2px;cursor:pointer;padding:4px;border-radius:9px;border:1.5px solid var(--mm-border);transition:.2s}
+.pal-option:hover,.pal-option.active{border-color:var(--mm-accent)}
+.pal-swatch{width:16px;height:32px;border-radius:3px}
+.tone-chips{display:flex;gap:.5rem;flex-wrap:wrap}
+.tone-chip{background:#0f0f18;border:1px solid var(--mm-border);border-radius:8px;padding:.35rem .8rem;font-size:.75rem;cursor:pointer;transition:.2s;color:var(--mm-muted)}
+.tone-chip:hover{border-color:var(--mm-accent);color:var(--mm-accent2)}
+.tone-chip.active{background:rgba(124,109,250,.15);border-color:var(--mm-accent);color:var(--mm-accent2)}
+
+/* ── Welcome Hero ── */
+.welcome-hero{background:linear-gradient(135deg,rgba(124,109,250,.12),rgba(6,214,160,.05));border:1px solid rgba(124,109,250,.2);border-radius:16px;padding:1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.welcome-hero h2{font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.welcome-hero p{font-size:.8rem;color:var(--mm-muted)}
+
+/* ── Mobile Nav ── */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--mm-surface);border-top:1px solid var(--mm-border);padding:.5rem .25rem;z-index:200;justify-content:space-around}
+.mob-nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;padding:.4rem .6rem;border-radius:10px;cursor:pointer;transition:.2s;color:var(--mm-muted);font-size:.58rem;border:none;background:none;font-family:'Inter',sans-serif;font-weight:500}
+.mob-nav-item.active{color:var(--mm-accent2);background:rgba(124,109,250,.1)}
+.mob-nav-item i{font-size:21px}
+
+/* ── Utilities ── */
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+.typing-cursor::after{content:'▋';animation:blink .8s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--mm-card);border:1px solid var(--mm-accent3);color:var(--mm-accent3);padding:.55rem 1.25rem;border-radius:10px;font-size:.8rem;font-weight:600;z-index:9999;animation:toastIn .3s ease;pointer-events:none;white-space:nowrap}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(8px)}}
+
+/* ── Responsive ── */
+@media(max-width:720px){
+  .sidebar{display:none}
+  .mobile-nav{display:flex}
+  .content{padding:1rem;padding-bottom:76px}
+  .cf-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .prompt-row{flex-direction:column}
+  .top-bar h1{font-size:1.1rem}
+  .welcome-hero{padding:1rem}
+  .onboard-card{padding:1.5rem}
+  .chip-grid{grid-template-columns:1fr}
+}
+@media(max-width:400px){
+  .stats-row{grid-template-columns:1fr}
+  .cf-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen pb-20 md:pb-0 md:pl-64">
+<body>
+<div class="app" id="app">
 
-    <div id="onboardingModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-<div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl transition-all"></div>
-            <div class="flex items-center justify-between mb-6">
-                <span class="text-sm font-semibold text-indigo-600 uppercase tracking-wider" id="stepIndicator">Step 1 of 3</span>
-                <div class="flex gap-1.5" id="stepDots">
-                    <div class="h-1.5 w-8 bg-indigo-600 rounded-full"></div>
-                    <div class="h-1.5 w-3 bg-gray-200 rounded-full"></div>
-                    <div class="h-1.5 w-3 bg-gray-200 rounded-full"></div>
-                </div>
-            </div>
+<!-- ═══════════════ ONBOARDING ═══════════════ -->
+<div class="onboard-overlay" id="onboardOverlay">
+  <div class="onboard-card">
+    <div class="step-bar">
+      <div class="step-dot active" id="sd0"></div>
+      <div class="step-dot" id="sd1"></div>
+      <div class="step-dot" id="sd2"></div>
+    </div>
+    <div id="stepContent"></div>
+    <div class="onboard-actions">
+      <button class="btn btn-ghost btn-sm" id="backBtn" onclick="prevStep()" style="display:none">← Back</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="nextStep()">Next Step →</button>
+    </div>
+  </div>
+</div>
 
-            <div id="wizardStep1" class="space-y-4">
-                <h2 class="text-2xl font-bold text-gray-900">Tell us about your brand</h2>
-                <p class="text-gray-500 text-sm">We'll train your personalized MarketMate AI using these details.</p>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Business Name</label>
-                    <input type="text" id="bizName" placeholder="e.g., Sweet Bloom Bakery" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Industry / Niche</label>
-                    <select id="bizIndustry" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                        <option>Food & Beverage</option>
-                        <option>E-commerce & Retail</option>
-                        <option>Real Estate</option>
-                        <option>SaaS & Tech Startup</option>
-                        <option>Health & Wellness</option>
-                        <option>Freelancer / Creator</option>
-                    </select>
-                </div>
-            </div>
+<!-- ═══════════════ MAIN LAYOUT ═══════════════ -->
+<div class="main-layout">
 
-            <div id="wizardStep2" class="space-y-4 hidden">
-                <h2 class="text-2xl font-bold text-gray-900">Who are we talking to?</h2>
-                <p class="text-gray-500 text-sm">Define your target demographic and personality flavor profiles.</p>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Target Audience</label>
-                    <input type="text" id="bizAudience" placeholder="e.g., Busy local moms, Gen-Z foodies" class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Brand Voice Tone</label>
-                    <select id="bizTone" class="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition">
-                        <option>Witty & Energetic</option>
-                        <option>Professional & Authoritative</option>
-                        <option>Empathetic & Warm</option>
-                        <option>Minimalist & Luxury</option>
-                    </select>
-                </div>
-            </div>
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">M</div>
+      <div><div class="brand-name">MarketMate</div><div class="brand-sub">AI ENGINE</div></div>
+    </div>
+    <button class="nav-item active" onclick="switchTab('home')" id="nav-home"><i class="ti ti-home"></i>Dashboard</button>
+    <button class="nav-item" onclick="switchTab('content')" id="nav-content"><i class="ti ti-sparkles"></i>Content Factory</button>
+    <button class="nav-item" onclick="switchTab('design')" id="nav-design"><i class="ti ti-brush"></i>Design Studio</button>
+    <button class="nav-item" onclick="switchTab('strategy')" id="nav-strategy"><i class="ti ti-brain"></i>Strategy Hub</button>
+    <button class="nav-item" onclick="switchTab('calendar')" id="nav-calendar"><i class="ti ti-calendar"></i>Campaign Calendar</button>
+    <button class="nav-item" onclick="switchTab('brand')" id="nav-brand"><i class="ti ti-palette"></i>Brand Kit</button>
+    <div style="flex:1"></div>
+    <div class="sidebar-footer">
+      <div style="color:var(--mm-accent3);font-weight:600;margin-bottom:.2rem;font-size:.72rem">● AI Sync Active</div>
+      <div style="color:var(--mm-muted);font-size:.72rem" id="sidebarBrandName">Your Brand</div>
+    </div>
+  </nav>
 
-            <div id="wizardStep3" class="space-y-4 hidden">
-                <h2 class="text-2xl font-bold text-gray-900">What's your primary goal?</h2>
-                <p class="text-gray-500 text-sm">Choose what areas you want to hyper-optimize first.</p>
-                <div class="grid grid-cols-1 gap-2.5">
-                    <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
-                        <input type="radio" name="bizGoal" value="Social Growth" checked class="text-indigo-600 focus:ring-indigo-500">
-                        <div>
-                            <p class="text-sm font-semibold text-gray-900">Grow Social Channels</p>
-                            <p class="text-xs text-gray-500">Captions, tracking calendars & consistent layouts</p>
-                        </div>
-                    </label>
-                    <label class="flex items-center gap-3 p-3.5 border rounded-xl cursor-pointer hover:bg-indigo-50/40 transition">
-                        <input type="radio" name="bizGoal" value="Lead Conversion" class="text-indigo-600 focus:ring-indigo-500">
-                        <div>
-                            <p class="text-sm font-semibold text-gray-900">Convert Cold Leads</p>
-                            <p class="text-xs text-gray-500">High-converting ads copy, sales flyers & email copy</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
+  <!-- MAIN CONTENT -->
+  <main class="content" id="mainContent">
 
-            <div class="flex items-center justify-between mt-8 pt-4 border-t border-gray-100 gap-3">
-                <button type="button" id="prevStepBtn" onclick="navigateWizard(-1)" class="px-5 py-2.5 rounded-xl border border-gray-200 font-medium text-gray-600 hover:bg-gray-50 transition invisible">
-                    Back
-                </button>
-                <button type="button" id="nextStepBtn" onclick="navigateWizard(1)" class="flex-1 bg-indigo-600 text-white font-medium py-2.5 rounded-xl hover:bg-indigo-700 transition flex items-center justify-center gap-2">
-                    Next Step →
-                </button>
-            </div>
+    <!-- ── HOME TAB ── -->
+    <div id="tab-home">
+      <div class="top-bar">
+        <div>
+          <h1 id="welcomeTitle">Welcome to MarketMate AI</h1>
+          <div style="font-size:.8rem;color:var(--mm-muted);margin-top:.2rem">"Create Better Marketing in Minutes"</div>
         </div>
+        <span class="badge">● Pro Engine Active</span>
+      </div>
+      <div class="welcome-hero" id="welcomeHero">
+        <div>
+          <h2 id="heroTitle">Set up your brand to begin</h2>
+          <p id="heroSub">Complete the 3-step brand setup to unlock AI content generation tailored to your business.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="showOnboard()">Setup Brand →</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="s-label">Assets Generated</div><div class="s-value" id="statAssets">0</div><div class="s-sub">in vault</div></div>
+        <div class="stat-card"><div class="s-label">Avg Engagement</div><div class="s-value">4.82%</div><div class="s-sub">↑ benchmark</div></div>
+        <div class="stat-card"><div class="s-label">Brand Sync</div><div class="s-value" id="statSync">Pending</div><div class="s-sub">intelligence core</div></div>
+        <div class="stat-card"><div class="s-label">Campaigns</div><div class="s-value" id="statCampaigns">0</div><div class="s-sub">scheduled</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-bulb"></i>Daily Optimization Tip</div>
+        <p style="font-size:.83rem;color:var(--mm-muted);line-height:1.7" id="dailyTip">Loading tip...</p>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-stack-2"></i>Workspace Vault — Recent Assets</div>
+        <div id="homeVaultPreview"></div>
+      </div>
     </div>
 
-
-    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 z-40 p-5 justify-between">
-        <div class="space-y-6">
-            <div class="flex items-center gap-2.5 px-2">
-                <div class="w-9 h-9 bg-gradient-to-tr from-indigo-600 to-violet-500 rounded-xl flex items-center justify-center text-white font-black shadow-md shadow-indigo-200">M</div>
-                <div>
-                    <h1 class="font-bold text-gray-900 tracking-tight leading-none text-base">MarketMate AI</h1>
-                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-semibold">SaaS Engine</span>
-                </div>
-            </div>
-
-            <nav class="space-y-1">
-                <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition bg-indigo-50 text-indigo-600">
-                    Dashboard
-                </button>
-                <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    AI Content Creator
-                </button>
-                <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Design Studio
-                </button>
-                <button onclick="switchTab('assistant')" data-tab="assistant" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Strategy Assistant
-                </button>
-                <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Content Calendar
-                </button>
-                <button onclick="switchTab('brandkit')" data-tab="brandkit" class="tab-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition text-gray-500 hover:bg-gray-50 hover:text-gray-900">
-                    Brand Kit
-                </button>
-            </nav>
+    <!-- ── CONTENT FACTORY TAB ── -->
+    <div id="tab-content" style="display:none">
+      <div class="top-bar"><h1>Content Factory</h1><span class="badge">Omni-Channel</span></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-wand"></i>AI Content Generator</div>
+        <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.45rem">What are we marketing today?</label>
+        <div class="prompt-row">
+          <input type="text" id="mainPrompt" placeholder="e.g. New summer collection launch, limited stock available..."/>
+          <button class="generate-btn" id="genBtn" onclick="generateContent()"><i class="ti ti-sparkles"></i>Generate</button>
         </div>
-
-        <div class="bg-gray-50 rounded-xl p-3 border border-gray-100 flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs" id="avatarLetter">U</div>
-            <div class="truncate">
-                <p class="text-xs font-semibold text-gray-800 truncate" id="sideBizName">Your Brand</p>
-                <span class="text-[10px] text-green-600 font-medium flex items-center gap-1"><span class="w-1.5 h-1.5 bg-green-500 rounded-full inline-block"></span> AI Sync Active</span>
-            </div>
+        <div class="cf-grid">
+          <div>
+            <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Asset Type</label>
+            <select class="select-field" id="assetType">
+              <option>Social Media Caption</option>
+              <option>Product Description</option>
+              <option>Email Newsletter</option>
+              <option>Blog Campaign Outline</option>
+              <option>High-Density Hashtag Bundle</option>
+              <option>Facebook / Instagram Ad Copy</option>
+              <option>Cold Outreach Email</option>
+              <option>WhatsApp Promo Message</option>
+              <option>LinkedIn Post</option>
+              <option>YouTube Video Script Outline</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Tone Override</label>
+            <select class="select-field" id="toneOverride">
+              <option value="">Use Brand Tone</option>
+              <option>Witty & Energetic</option>
+              <option>Professional & Authoritative</option>
+              <option>Empathetic & Warm</option>
+              <option>Minimalist & Luxury</option>
+              <option>Urgent & Persuasive</option>
+              <option>Playful & Fun</option>
+            </select>
+          </div>
         </div>
-    </aside>
+        <div style="margin-top:.5rem">
+          <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Context & Parameters (optional)</label>
+          <textarea class="select-field" id="contextParams" rows="2" placeholder="Add specific details, offers, dates, pricing, URLs..."></textarea>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-file-text"></i>Live AI Output</div>
+        <div class="ai-output" id="aiOutput"><span class="ai-placeholder">Set your parameters above and click Generate. Your AI-crafted content will appear here.</span></div>
+        <div class="output-actions" id="outputActions" style="display:none">
+          <button class="btn btn-ghost btn-sm" onclick="copyOutput()"><i class="ti ti-copy" style="font-size:13px;margin-right:4px"></i>Copy</button>
+          <button class="btn btn-ghost btn-sm" onclick="vaultOutput()"><i class="ti ti-bookmark" style="font-size:13px;margin-right:4px"></i>Save to Vault</button>
+          <button class="btn btn-ghost btn-sm" onclick="generateContent()"><i class="ti ti-refresh" style="font-size:13px;margin-right:4px"></i>Regenerate</button>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-archive"></i>Vault — Saved Assets</div>
+        <div id="vaultList"></div>
+      </div>
+    </div>
 
+    <!-- ── DESIGN STUDIO TAB ── -->
+    <div id="tab-design" style="display:none">
+      <div class="top-bar"><h1>Design Studio</h1><span class="badge">Creative Matrix</span></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-layout"></i>Flyer & Graphic Generator</div>
+        <div class="cf-grid" style="margin-bottom:.75rem">
+          <div>
+            <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Template Type</label>
+            <select class="select-field" id="designTemplate">
+              <option>Event Promotion</option>
+              <option>Flash Sale / Discount</option>
+              <option>Product Launch</option>
+              <option>Brand Awareness</option>
+              <option>Corporate Announcement</option>
+              <option>Holiday Special</option>
+              <option>Grand Opening</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Color Theme</label>
+            <select class="select-field" id="designTheme">
+              <option>Brand Purple</option>
+              <option>Dark & Bold</option>
+              <option>Light & Minimal</option>
+              <option>Vibrant & Energetic</option>
+              <option>Luxury Gold</option>
+              <option>Ocean Blue</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:.7rem"><label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Headline</label><input type="text" id="designHeadline" class="select-field" placeholder="e.g. GRAND OPENING — Get 30% Off Today"/></div>
+        <div style="margin-bottom:.7rem"><label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Subtext / Details</label><input type="text" id="designSubtext" class="select-field" placeholder="e.g. Visit us this Saturday from 9AM — Limited spots only"/></div>
+        <div style="margin-bottom:.9rem"><label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Call to Action</label><input type="text" id="designCta" class="select-field" placeholder="e.g. CLAIM YOUR DISCOUNT"/></div>
+        <button class="generate-btn" id="designGenBtn" onclick="generateDesign()"><i class="ti ti-wand"></i>Generate Design</button>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-eye"></i>Design Preview</div>
+        <div class="design-canvas" id="designCanvas">
+          <div style="text-align:center;color:var(--mm-muted);padding:2rem">
+            <i class="ti ti-photo" style="font-size:40px;display:block;margin-bottom:.75rem;opacity:.25"></i>
+            <p style="font-size:.82rem">Fill in the parameters above and click Generate Design</p>
+          </div>
+        </div>
+        <div class="output-actions" id="designActions" style="display:none;margin-top:.75rem">
+          <button class="btn btn-ghost btn-sm" onclick="saveDesign()"><i class="ti ti-bookmark" style="font-size:13px;margin-right:4px"></i>Save Blueprint</button>
+          <button class="btn btn-ghost btn-sm" onclick="showToast('PNG export coming in Phase 2 🚀')"><i class="ti ti-download" style="font-size:13px;margin-right:4px"></i>Export PNG</button>
+        </div>
+      </div>
+    </div>
 
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-40 px-2 py-1 flex justify-around shadow-lg">
-        <button onclick="switchTab('dashboard')" data-tab="dashboard" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-indigo-600">
-            <span class="text-[10px] font-medium">Home</span>
-        </button>
-        <button onclick="switchTab('creator')" data-tab="creator" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Create</span>
-        </button>
-        <button onclick="switchTab('studio')" data-tab="studio" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Design</span>
-        </button>
-        <button onclick="switchTab('assistant')" data-tab="assistant" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Strategy</span>
-        </button>
-        <button onclick="switchTab('calendar')" data-tab="calendar" class="tab-btn flex flex-col items-center gap-0.5 py-1 px-2 rounded-xl text-gray-400">
-            <span class="text-[10px] font-medium">Plan</span>
-        </button>
-    </nav>
+    <!-- ── STRATEGY HUB TAB ── -->
+    <div id="tab-strategy" style="display:none">
+      <div class="top-bar"><h1>Strategy Hub</h1><span class="badge">Intelligence Matrix</span></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-brain"></i>AI Brand Strategist</div>
+        <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.5rem">Ask the strategy engine anything about your brand, market, or growth</label>
+        <div class="prompt-row">
+          <input type="text" id="strategyPrompt" placeholder="e.g. How can I grow my Instagram following by 30% this quarter?"/>
+          <button class="generate-btn" id="strategyBtn" onclick="generateStrategy()"><i class="ti ti-brain"></i>Analyze</button>
+        </div>
+        <div class="ai-output" id="strategyOutput" style="min-height:90px"><span class="ai-placeholder">Ask the strategy engine a question about your brand, competitors, or marketing approach.</span></div>
+        <div class="output-actions" id="strategyActions" style="display:none">
+          <button class="btn btn-ghost btn-sm" onclick="copyStratOut()"><i class="ti ti-copy" style="font-size:13px;margin-right:4px"></i>Copy</button>
+          <button class="btn btn-ghost btn-sm" onclick="vaultStratOut()"><i class="ti ti-bookmark" style="font-size:13px;margin-right:4px"></i>Save Insight</button>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-chart-arrows"></i>Strategic Frameworks</div>
+        <div class="strategy-card"><span class="sc-tag tag-growth">Growth Vector</span><h4>Micro-Influencer Funnels</h4><p>Leverage niche audiences by targeting micro-influencers with 5K–50K followers. Their engagement rates run 3–5× higher than macro influencers at a fraction of the cost. Build invitation packs matching your voice tone profile.</p></div>
+        <div class="strategy-card"><span class="sc-tag tag-market">Market Arbitrage</span><h4>Competitive Value Contrast</h4><p>Identify your top 3 competitors' weaknesses and build content that directly contrasts your strengths. Emphasize agility, personalization, and responsiveness where larger competitors are slow.</p></div>
+        <div class="strategy-card"><span class="sc-tag tag-brand">Brand Position</span><h4>Content Consistency Architecture</h4><p>The brands with the highest recall post on a strict cadence. Plan content 2 weeks ahead using the Campaign Calendar to maintain presence without creative burnout.</p></div>
+        <div class="strategy-card"><span class="sc-tag tag-growth">Conversion</span><h4>SWOT-Driven Content Blocks</h4><p>Map your Strengths, Weaknesses, Opportunities, and Threats into a content calendar. Each content piece should strengthen a strength or address a weakness in your market positioning.</p></div>
+      </div>
+    </div>
 
+    <!-- ── CAMPAIGN CALENDAR TAB ── -->
+    <div id="tab-calendar" style="display:none">
+      <div class="top-bar"><h1>Campaign Calendar</h1><span class="badge">Gregorian Engine</span></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-calendar"></i>Calendar View</div>
+        <div class="section-tabs">
+          <button class="tab-btn active" id="calMonthBtn" onclick="switchCal('month')">Monthly Matrix</button>
+          <button class="tab-btn" id="calWeekBtn" onclick="switchCal('week')">Weekly Micro</button>
+        </div>
+        <div id="calView"></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-plus"></i>Schedule Content</div>
+        <div class="cf-grid" style="margin-bottom:.75rem">
+          <div><label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Date</label><input type="date" class="select-field" id="calDate"/></div>
+          <div>
+            <label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Platform</label>
+            <select class="select-field" id="calPlatform">
+              <option>Instagram</option><option>Facebook</option><option>LinkedIn</option>
+              <option>TikTok</option><option>X (Twitter)</option><option>YouTube</option><option>WhatsApp</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:.75rem"><label style="font-size:.78rem;color:var(--mm-muted);display:block;margin-bottom:.4rem">Campaign Note</label><input type="text" class="select-field" id="calNote" placeholder="e.g. Summer sale announcement — 3 stories + 1 feed post"/></div>
+        <button class="btn btn-primary btn-sm" onclick="addCalEvent()"><i class="ti ti-plus" style="font-size:13px;margin-right:4px"></i>Add to Calendar</button>
+        <div id="calEventsList" style="margin-top:1rem"></div>
+      </div>
+    </div>
 
-    <main class="p-4 md:p-8 max-w-6xl mx-auto space-y-8">
+    <!-- ── BRAND KIT TAB ── -->
+    <div id="tab-brand" style="display:none">
+      <div class="top-bar"><h1>Brand Kit</h1><span class="badge">Identity Core</span></div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-building"></i>Brand Intelligence Core</div>
+        <div id="brandKitContent"></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-palette"></i>Palette Archetypes</div>
+        <p style="font-size:.78rem;color:var(--mm-muted);margin-bottom:.75rem">Choose a color palette for your brand identity.</p>
+        <div class="palette-row" id="paletteRow"></div>
+        <button class="btn btn-primary btn-sm" style="margin-top:.9rem" onclick="applyPalette()"><i class="ti ti-check" style="font-size:13px;margin-right:4px"></i>Apply to Brand</button>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-typography"></i>Typography Pairings</div>
+        <div style="display:grid;gap:.6rem">
+          <div class="vault-item"><div><div class="vi-meta">Primary Display</div><div style="font-size:1rem;font-weight:700;margin-top:.2rem">Inter — Bold Headers</div></div></div>
+          <div class="vault-item"><div><div class="vi-meta">Body / Metadata</div><div style="font-size:.85rem;margin-top:.2rem;color:var(--mm-muted)">Inter Regular — Body copy, captions</div></div></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-message"></i>Voice Tone Profile</div>
+        <div class="tone-chips" id="toneChips"></div>
+      </div>
+      <div class="section">
+        <div class="section-title"><i class="ti ti-refresh"></i>Re-Train Brand AI</div>
+        <p style="font-size:.8rem;color:var(--mm-muted);margin-bottom:.75rem">Update your brand intelligence to improve all AI-generated outputs.</p>
+        <button class="btn btn-ghost btn-sm" onclick="showOnboard()"><i class="ti ti-edit" style="font-size:13px;margin-right:4px"></i>Edit Brand Profile</button>
+      </div>
+    </div>
 
-        <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-100">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight" id="headerWelcome">Welcome to MarketMate AI</h1>
-                <p class="text-sm text-gray-500">"Create Better Marketing in Minutes."</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold px-2.5 py-1 bg-violet-100 text-violet-700 rounded-full flex items-center gap-1">
-                    Pro Engine Active
-                </span>
-                <button onclick="openOnboarding()" class="p-2 border border-gray-200 rounded-xl bg-white hover:bg-gray-50 text-gray-600 transition" title="Re-tune Brand Profiles">
-                    ⚙️
-                </button>
-            </div>
-        </header>
+  </main>
+</div>
 
-        <section id="view-dashboard" class="tab-view space-y-6">
-            <div class="bg-gradient-to-r from-indigo-900 to-slate-900 rounded-2xl p-5 md:p-6 text-white shadow-xl relative overflow-hidden">
-                <div class="relative z-10 max-w-xl space-y-3">
-                    <span class="text-[11px] uppercase tracking-widest font-bold text-indigo-300">Omni-Channel Content Generator</span>
-                    <h2 class="text-xl md:text-2xl font-bold tracking-tight">What are we marketing today?</h2>
-                    <div class="flex flex-col sm:flex-row gap-2 bg-white/10 p-1.5 backdrop-blur-md rounded-xl border border-white/10">
-                        <input type="text" id="omniPrompt" placeholder="Describe a campaign, product drop, or flash sale offer..." class="bg-transparent text-white placeholder-slate-400 px-3 py-2.5 focus:outline-none flex-1 text-sm">
-                        <button onclick="handleOmniGenerate()" class="bg-indigo-600 hover:bg-indigo-500 font-semibold text-sm text-white px-5 py-2.5 rounded-lg transition shadow-md whitespace-nowrap">
-                            Generate Magic ✨
-                        </button>
-                    </div>
-                </div>
-            </div>
+<!-- MOBILE NAV -->
+<nav class="mobile-nav" id="mobileNav">
+  <button class="mob-nav-item active" onclick="switchTab('home')" id="mnav-home"><i class="ti ti-home"></i>Home</button>
+  <button class="mob-nav-item" onclick="switchTab('content')" id="mnav-content"><i class="ti ti-sparkles"></i>Create</button>
+  <button class="mob-nav-item" onclick="switchTab('design')" id="mnav-design"><i class="ti ti-brush"></i>Design</button>
+  <button class="mob-nav-item" onclick="switchTab('strategy')" id="mnav-strategy"><i class="ti ti-brain"></i>Strategy</button>
+  <button class="mob-nav-item" onclick="switchTab('calendar')" id="mnav-calendar"><i class="ti ti-calendar"></i>Plan</button>
+</nav>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
-                    <div class="text-xl">📈</div>
-                    <div>
-                        <span class="text-xs text-gray-400 font-medium block">Avg Engagement Rate</span>
-                        <span class="text-lg font-bold text-gray-800">4.82%</span>
-                    </div>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4">
-                    <div class="text-xl">📦</div>
-                    <div>
-                        <span class="text-xs text-gray-400 font-medium block">Assets Generated</span>
-                        <span class="text-lg font-bold text-gray-800" id="dashAssetCount">0 Assets</span>
-                    </div>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-gray-100 flex items-center gap-4 md:col-span-1">
-                    <div class="text-xl">💡</div>
-                    <div class="flex-1 truncate">
-                        <span class="text-xs text-gray-400 font-medium block">Daily Optimization Tip</span>
-                        <span class="text-sm font-medium text-gray-800 block truncate" id="rotatingTip">Post at 6:00 PM for optimal reach.</span>
-                    </div>
-                </div>
-            </div>
+</div><!-- /app -->
 
-            <div class="space-y-3">
-                <div class="flex items-center justify-between">
-                    <h3 class="font-bold text-gray-800 text-lg">Your Workspace Vault</h3>
-                </div>
-                <div id="vaultEmptyState" class="bg-white rounded-xl p-8 border border-dashed border-gray-200 flex flex-col items-center justify-center text-center space-y-3">
-                    <div class="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-400">📂</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 text-sm">Your generation library is clear</h4>
-                        <p class="text-xs text-gray-400 max-w-xs mt-0.5">Use our core features below or the generation prompt bar above to spin up automated marketing vectors.</p>
-                    </div>
-                </div>
-                <div id="vaultGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden"></div>
-            </div>
-        </section>
+<script>
+/* ════════════════════════════════════════
+   MarketMate AI — Core Application Logic
+   ════════════════════════════════════════ */
 
+const TABS = ['home','content','design','strategy','calendar','brand'];
 
-        <section id="view-creator" class="tab-view space-y-6 hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-                <div class="bg-white rounded-xl border border-gray-100 p-5 space-y-4 lg:col-span-2 shadow-sm">
-                    <h3 class="font-bold text-gray-800 text-lg">Content Factory</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Asset Typology</label>
-                        <select id="creatorType" onchange="updateCreatorOptions()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="Social Media Caption">Social Media Caption</option>
-                            <option value="Product Description">Product Description</option>
-                            <option value="Email Newsletter">Email Newsletter Narrative</option>
-                            <option value="Blog Campaign Outlines">Blog Campaign Outlines</option>
-                            <option value="High-Density Hashtags">High-Density Hashtags Bundle</option>
-                        </select>
-                    </div>
-                    <div id="captionStyleSection" class="hidden">
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Caption Style</label>
-                        <select id="captionStyle" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="mixed">Mixed (All Types)</option>
-                            <option value="promotional">Promotional 🔥</option>
-                            <option value="educational">Educational 💡</option>
-                            <option value="engagement">Engagement 💬</option>
-                            <option value="sales">Sales Focused 💰</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Specific Context Parameters</label>
-                        <textarea id="creatorPrompt" rows="4" placeholder="e.g., Launching our low-carb raspberry croissant line this coming Saturday morning with free samples for first 50 guests..." class="w-full border border-gray-200 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
-                    <button onclick="generateTextContent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium text-sm py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-md shadow-indigo-100">
-                        Assemble Asset Layout ✨
-                    </button>
-                </div>
+let brand = {name:'',industry:'',audience:'',tone:'Witty & Energetic',goal:'',description:'',uvp:''};
+let vault = [];
+let calEvents = [];
+let currentStep = 0;
+let currentOutput = '';
+let currentStratOutput = '';
+let selectedPaletteIdx = 0;
+let calViewMode = 'month';
 
-                <div class="lg:col-span-3 space-y-3">
-                    <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Live AI Output Ledger</span>
-                    <div class="bg-white rounded-xl border border-gray-100 p-6 min-h-[280px] flex flex-col justify-between relative shadow-sm" id="creatorOutputBox">
-                        <div id="creatorOutputEmpty" class="my-auto text-center space-y-2">
-                            <div class="text-2xl">🤖</div>
-                            <p class="text-sm text-gray-400">Provide parameters on the left pane and run the layout generation framework.</p>
-                        </div>
-                        <div id="creatorOutputLoader" class="hidden absolute inset-6 space-y-4">
-                            <div class="h-6 w-1/3 animate-shimmer rounded"></div>
-                            <div class="space-y-2">
-                                <div class="h-4 w-full animate-shimmer rounded"></div>
-                                <div class="h-4 w-5/6 animate-shimmer rounded"></div>
-                                <div class="h-4 w-4/5 animate-shimmer rounded"></div>
-                            </div>
-                        </div>
-                        <div id="creatorOutputContainer" class="hidden space-y-4 text-gray-700 text-sm whitespace-pre-wrap leading-relaxed"></div>
-                        <div id="creatorActionRow" class="hidden flex items-center justify-between gap-2 border-t border-gray-50 pt-4 mt-4">
-                            <button onclick="regenerateContent()" class="text-xs font-medium text-indigo-600 hover:text-indigo-700 border border-indigo-200 rounded-lg px-3 py-2 hover:bg-indigo-50 transition flex items-center gap-1.5">
-                                🔄 Regenerate
-                            </button>
-                            <div class="flex gap-2">
-                                <button onclick="copyToClipboard('creatorOutputContainer')" class="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 text-gray-500 flex items-center gap-1.5 text-xs transition font-medium">
-                                    📋 Copy Material
-                                </button>
-                                <button onclick="saveCurrentTextAsset()" class="bg-slate-900 text-white px-3 py-2 rounded-lg hover:bg-slate-800 flex items-center gap-1.5 text-xs transition font-medium">
-                                    💾 Vault Asset
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+const INDUSTRIES = ['Food & Beverage','E-commerce & Retail','Real Estate','SaaS & Tech Startup','Health & Wellness','Freelancer / Creator','Finance & Insurance','Education & Training','Beauty & Fashion','Hospitality & Tourism'];
+const TONES = ['Witty & Energetic','Professional & Authoritative','Empathetic & Warm','Minimalist & Luxury','Urgent & Bold','Playful & Fun'];
+const GOALS = [
+  {id:'social',icon:'ti-device-mobile',title:'Grow Social Channels',desc:'Captions, tracking calendars & consistent layouts'},
+  {id:'leads',icon:'ti-target',title:'Convert Cold Leads',desc:'High-converting ad copy, sales flyers & email campaigns'},
+  {id:'awareness',icon:'ti-star',title:'Build Brand Awareness',desc:'Storytelling content, brand voice & positioning'},
+  {id:'ecom',icon:'ti-shopping-cart',title:'Drive E-commerce Sales',desc:'Product descriptions, promo copy & conversion content'}
+];
+const PALETTES = [
+  ['#7c6dfa','#a78bfa','#06d6a0','#1a1a24','#f0eeff'],
+  ['#ff6b6b','#ffd93d','#6bcb77','#2d3436','#ffffff'],
+  ['#0984e3','#00b894','#fdcb6e','#2d3436','#dfe6e9'],
+  ['#e17055','#d63031','#fddb3a','#2d3436','#fff8f0'],
+  ['#6c5ce7','#fd79a8','#55efc4','#1a1a2e','#f8f8ff'],
+  ['#daa520','#b8860b','#c9a227','#1a1200','#fff8e1'],
+  ['#2c3e50','#3498db','#ecf0f1','#1a1a1a','#ffffff'],
+  ['#e91e63','#9c27b0','#673ab7','#1a1a2e','#fce4ec'],
+];
+const DAILY_TIPS = [
+  'Post between 6–8 PM for maximum reach on most platforms. Consistency beats frequency — 3 quality posts per week outperform 7 mediocre ones.',
+  'Video content gets 3× more engagement than static images across most platforms. Try a short Reel or TikTok this week.',
+  'Use storytelling in your captions. Start with a strong hook in the first line to stop the scroll — ask a question or make a bold statement.',
+  'Add a clear call-to-action in every post. "Save this for later" and "Share with someone who needs this" significantly boost reach.',
+  'Authenticity wins in modern marketing. Show behind-the-scenes content, real team moments, and your creation process.',
+  'Repurpose content across platforms. One long-form piece becomes 5 social posts, 3 stories, and an email newsletter.',
+  'Respond to every comment in the first hour of posting — it signals to the algorithm that your content is driving engagement.',
+];
+const THEMES = {
+  'Brand Purple':  {accent:'#7c6dfa',accent2:'#a78bfa',bg:'#0d0b1f',text:'#f0eeff'},
+  'Dark & Bold':   {accent:'#ff6b6b',accent2:'#ffd93d',bg:'#1a1a1a',text:'#ffffff'},
+  'Light & Minimal':{accent:'#333333',accent2:'#555555',bg:'#f9f9f9',text:'#111111'},
+  'Vibrant & Energetic':{accent:'#06d6a0',accent2:'#7c6dfa',bg:'#0a001f',text:'#ffffff'},
+  'Luxury Gold':   {accent:'#daa520',accent2:'#b8860b',bg:'#1a1200',text:'#fff8e1'},
+  'Ocean Blue':    {accent:'#0984e3',accent2:'#00b894',bg:'#021a2e',text:'#dfe6e9'},
+};
 
+/* ── Onboarding ── */
+function buildStep() {
+  const s = currentStep;
+  const c = document.getElementById('stepContent');
+  document.getElementById('backBtn').style.display = s > 0 ? 'block' : 'none';
+  document.getElementById('nextBtn').textContent = s >= 2 ? 'Launch MarketMate AI →' : 'Next Step →';
+  ['sd0','sd1','sd2'].forEach((id,i) => {
+    const el = document.getElementById(id);
+    if(i < s) el.className = 'step-dot done';
+    else if(i === s) el.className = 'step-dot active';
+    else el.className = 'step-dot';
+  });
+  if(s === 0){
+    c.innerHTML = `
+      <h2>Tell us about your brand</h2>
+      <p>We'll train your MarketMate AI using these details.</p>
+      <div class="form-field"><label>Business Name *</label><input id="ob_name" placeholder="e.g. Bloom Bakery" value="${brand.name}"/></div>
+      <div class="form-field"><label>Industry / Niche</label><select id="ob_ind">${INDUSTRIES.map(i=>`<option ${brand.industry===i?'selected':''}>${i}</option>`).join('')}</select></div>
+      <div class="form-field"><label>What does your business do?</label><textarea id="ob_desc" rows="2" placeholder="e.g. We sell artisan baked goods made with organic, locally sourced ingredients...">${brand.description}</textarea></div>
+      <div class="form-field"><label>Unique Value Proposition</label><input id="ob_uvp" placeholder="e.g. Freshly baked daily with zero preservatives or additives" value="${brand.uvp}"/></div>`;
+  } else if(s === 1){
+    c.innerHTML = `
+      <h2>Who are we talking to?</h2>
+      <p>Define your target audience and brand personality.</p>
+      <div class="form-field"><label>Target Audience</label><input id="ob_aud" placeholder="e.g. Health-conscious millennials aged 25–35 in urban areas" value="${brand.audience}"/></div>
+      <div class="form-field"><label>Brand Voice Tone</label>
+        <div class="chip-grid">${TONES.map(t=>`<div class="chip ${brand.tone===t?'selected':''}" onclick="selectChipTone(this,'${t}')">${t}</div>`).join('')}</div>
+      </div>`;
+  } else {
+    c.innerHTML = `
+      <h2>What's your primary goal?</h2>
+      <p>Choose what to hyper-optimize first.</p>
+      ${GOALS.map(g=>`<div class="goal-card ${brand.goal===g.id?'selected':''}" onclick="selectGoal(this,'${g.id}')"><h4><i class="ti ${g.icon}" style="font-size:14px;margin-right:.4rem"></i>${g.title}</h4><p>${g.desc}</p></div>`).join('')}`;
+  }
+}
 
-        <section id="view-studio" class="tab-view space-y-6 hidden">
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
-                <div class="bg-white rounded-xl border border-gray-100 p-5 space-y-4 lg:col-span-2 shadow-sm">
-                    <h3 class="font-bold text-gray-800 text-lg">Creative Matrix Canvas</h3>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Structural Intent Profile</label>
-                        <select id="flyerLayout" onchange="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <option value="event">Event Promotion Template</option>
-                            <option value="promo">Flash Discount Vector</option>
-                            <option value="social">Corporate Micro-Graphic</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Headline Text Overlay</label>
-                        <input type="text" id="flyerHeadline" value="GRAND REVEAL LAUNCH" oninput="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Subtext / Details Narrative</label>
-                        <input type="text" id="flyerSubtext" value="Join us this Saturday from 9 AM onwards for introductory offers." oninput="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Call To Action Capture</label>
-                        <input type="text" id="flyerCTA" value="CLAIM 20% DISCOUNT" oninput="updateFlyerCanvas()" class="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-500 uppercase mb-1">Background AI Theme Vector</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="flyerBgPrompt" placeholder="e.g., Abstract minimalist orange pastel circles..." class="w-full border border-gray-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                            <button onclick="generateFlyerBackground()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3 py-2 rounded-xl font-medium transition whitespace-nowrap">Inject Vector</button>
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-4 border-t border-gray-100 pt-4">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-gray-700">🎨 Advanced Design Studio</h4>
-                        
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Background Color</label>
-                                <input type="color" id="bgColorPicker" value="#4F46E5" onchange="updateFlyerStyle('bgColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Accent Color</label>
-                                <input type="color" id="accentColorPicker" value="#FFFFFF" onchange="updateFlyerStyle('accentColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
-                            </div>
-                        </div>
+function selectChipTone(el, t){ document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); brand.tone = t; }
+function selectGoal(el, g){ document.querySelectorAll('.goal-card').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); brand.goal = g; }
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Gradient Mode</label>
-                            <select id="gradientMode" onchange="updateFlyerStyle('gradientMode', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="solid">Solid Color</option>
-                                <option value="linear">Linear Gradient</option>
-                                <option value="radial">Radial Gradient</option>
-                                <option value="diagonal">Diagonal Gradient</option>
-                            </select>
-                        </div>
+function saveStepData(){
+  if(currentStep===0){
+    brand.name = (document.getElementById('ob_name')?.value||'').trim() || brand.name;
+    brand.industry = document.getElementById('ob_ind')?.value || brand.industry;
+    brand.description = (document.getElementById('ob_desc')?.value||'').trim() || brand.description;
+    brand.uvp = (document.getElementById('ob_uvp')?.value||'').trim() || brand.uvp;
+  }
+  if(currentStep===1){
+    brand.audience = (document.getElementById('ob_aud')?.value||'').trim() || brand.audience;
+  }
+}
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Background Opacity</label>
-                            <div class="flex gap-2 items-center">
-                                <input type="range" min="0" max="100" value="100" id="bgOpacity" onchange="updateFlyerStyle('bgOpacity', this.value)" class="flex-1">
-                                <span id="opacityValue" class="text-xs font-mono w-8 text-right">100%</span>
-                            </div>
-                        </div>
+function prevStep(){ if(currentStep>0){ saveStepData(); currentStep--; buildStep(); } }
+function nextStep(){
+  if(currentStep<2){ saveStepData(); currentStep++; buildStep(); }
+  else { saveStepData(); if(!brand.name){ showToast('Please enter your business name'); return; } completeBrandSetup(); }
+}
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Text Color</label>
-                            <input type="color" id="textColorPicker" value="#FFFFFF" onchange="updateFlyerStyle('textColor', this.value)" class="w-full h-10 rounded-lg border border-gray-200 cursor-pointer">
-                        </div>
+function completeBrandSetup(){
+  document.getElementById('onboardOverlay').style.display = 'none';
+  document.getElementById('sidebarBrandName').textContent = brand.name;
+  document.getElementById('welcomeTitle').textContent = `Welcome back, ${brand.name}`;
+  document.getElementById('heroTitle').textContent = `${brand.name} is ready to market`;
+  document.getElementById('heroSub').textContent = `Your AI is trained for ${brand.industry||'your industry'}. Start creating content tailored to ${brand.audience||'your audience'}.`;
+  document.querySelector('#welcomeHero button').textContent = 'Update Brand →';
+  document.getElementById('statSync').textContent = 'Active';
+  updateDailyTip(); renderVault(); renderCalendar(); renderBrandKit();
+  showToast(`${brand.name} brand AI activated!`);
+}
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Headline Font</label>
-                            <select id="headlineFont" onchange="updateFlyerStyle('headlineFont', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="Arial">Arial Black</option>
-                                <option value="Georgia">Georgia Serif</option>
-                                <option value="Impact">Impact Heavy</option>
-                                <option value="Courier New">Courier Mono</option>
-                                <option value="Trebuchet MS">Trebuchet Modern</option>
-                                <option value="Comic Sans MS">Comic Bold</option>
-                            </select>
-                        </div>
+function showOnboard(){ currentStep=0; document.getElementById('onboardOverlay').style.display='flex'; buildStep(); }
 
-                        <div class="grid grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Headline Size</label>
-                                <input type="range" min="20" max="50" value="32" id="headlineSize" onchange="updateFlyerStyle('headlineSize', this.value)" class="w-full">
-                                <span class="text-xs text-gray-500" id="headlineSizeValue">32px</span>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Element Spacing</label>
-                                <input type="range" min="0" max="30" value="15" id="elementSpacing" onchange="updateFlyerStyle('elementSpacing', this.value)" class="w-full">
-                                <span class="text-xs text-gray-500" id="spacingValue">15px</span>
-                            </div>
-                        </div>
+/* ── Tab Switching ── */
+function switchTab(t){
+  TABS.forEach(tab => {
+    const el = document.getElementById('tab-'+tab); if(el) el.style.display = tab===t?'block':'none';
+    const n = document.getElementById('nav-'+tab); if(n) n.className = 'nav-item'+(tab===t?' active':'');
+    const m = document.getElementById('mnav-'+tab); if(m) m.className = 'mob-nav-item'+(tab===t?' active':'');
+  });
+  if(t==='calendar') renderCalendar();
+  if(t==='brand') renderBrandKit();
+  if(t==='home') renderVault();
+}
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Upload Background Image</label>
-                            <input type="file" accept="image/*" id="bgImageUpload" onchange="uploadFlyerImage(this)" class="w-full text-xs file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-indigo-600 file:text-white file:cursor-pointer hover:file:bg-indigo-700 transition">
-                        </div>
+/* ── Claude API ── */
+async function callClaude(messages, system){
+  try{
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system,messages})
+    });
+    const data = await res.json();
+    if(data.error) return 'API Error: ' + data.error.message;
+    return data.content?.[0]?.text || 'No response received.';
+  } catch(e){ return 'Connection error. Check your API key and try again.'; }
+}
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Brand Logo</label>
-                            <input type="file" accept="image/*" id="logoUpload" onchange="uploadLogoImage(this)" class="w-full text-xs file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-purple-600 file:text-white file:cursor-pointer hover:file:bg-purple-700 transition">
-                        </div>
+function buildBrandContext(){
+  let ctx = '';
+  if(brand.name) ctx += `Brand name: ${brand.name}. `;
+  if(brand.industry) ctx += `Industry: ${brand.industry}. `;
+  if(brand.description) ctx += `Business: ${brand.description}. `;
+  if(brand.uvp) ctx += `UVP: ${brand.uvp}. `;
+  if(brand.audience) ctx += `Target audience: ${brand.audience}. `;
+  if(brand.tone) ctx += `Default tone: ${brand.tone}. `;
+  return ctx;
+}
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Border Style</label>
-                            <select id="borderStyle" onchange="updateFlyerStyle('borderStyle', this.value)" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                <option value="none">No Border</option>
-                                <option value="solid">Solid Border</option>
-                                <option value="dashed">Dashed Border</option>
-                                <option value="double">Double Border</option>
-                                <option value="rounded">Rounded Heavy</option>
-                            </select>
-                        </div>
+/* ── Content Factory ── */
+async function generateContent(){
+  const prompt = document.getElementById('mainPrompt').value.trim();
+  if(!prompt){ showToast('Enter what you want to market first!'); return; }
+  const type = document.getElementById('assetType').value;
+  const tone = document.getElementById('toneOverride').value || brand.tone || 'Professional';
+  const ctx = document.getElementById('contextParams').value.trim();
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generating...';
+  const out = document.getElementById('aiOutput');
+  out.innerHTML = '<span class="typing-cursor">Crafting your content</span>';
+  document.getElementById('outputActions').style.display = 'none';
 
-                        <button onclick="resetFlyerDesign()" class="w-full text-xs font-semibold py-2 px-3 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition">
-                            ↻ Reset to Default
-                        </button>
-                    </div>
-                </div>
+  const system = `You are MarketMate AI, an expert marketing copywriter and strategist. ${buildBrandContext()} Write in a ${tone} tone. Be specific, punchy, and conversion-focused. Output ONLY the requested marketing content with no preamble, explanations, or meta-commentary. Make it platform-ready and impactful.`;
+  const msg = `Create a ${type} for: "${prompt}".${ctx ? ` Additional context: ${ctx}` : ''} Tailor it precisely to the brand profile provided.`;
 
-                <div class="lg:col-span-3 space-y-4">
-                    <div id="flyerRenderCanvas" class="aspect-[4/5] max-w-[380px] mx-auto bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl shadow-xl p-8 flex flex-col justify-between text-white relative overflow-hidden transition-all duration-300">
-                        <div id="canvasBgDecoration" class="absolute inset-0 z-0 opacity-20 pointer-events-none flex items-center justify-center">
-                            <div class="w-72 h-72 rounded-full border-[16px] border-white animate-pulse"></div>
-                        </div>
-                        
-                        <div class="z-10 flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-widest bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-md border border-white/10" id="canvasHeaderTag">Exclusive Invitation</span>
-                            <div class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></div>
-                        </div>
+  const result = await callClaude([{role:'user',content:msg}], system);
+  currentOutput = result;
+  out.textContent = result;
+  document.getElementById('outputActions').style.display = 'flex';
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-sparkles"></i>Generate';
+}
 
-                        <div class="z-10 space-y-3 my-auto py-6">
-                            <h2 class="text-3xl font-black tracking-tight leading-tight uppercase drop-shadow-md" id="canvasHeadline">GRAND REVEAL LAUNCH</h2>
-                            <p class="text-sm text-indigo-100/90 leading-relaxed font-medium" id="canvasSubtext">Join us this Saturday from 9 AM onwards for introductory offers.</p>
-                        </div>
+function copyOutput(){ if(currentOutput){ navigator.clipboard?.writeText(currentOutput); showToast('Copied to clipboard!'); } }
+function vaultOutput(){
+  if(!currentOutput) return;
+  vault.unshift({text:currentOutput,type:document.getElementById('assetType').value,date:new Date().toLocaleDateString(),id:Date.now()});
+  document.getElementById('statAssets').textContent = vault.length;
+  renderVault(); showToast('Saved to vault!');
+}
 
-                        <div class="z-10 pt-4 border-t border-white/20 flex flex-col gap-3">
-                            <div class="bg-white text-indigo-900 font-bold text-center py-3 rounded-xl text-xs tracking-wider uppercase shadow-lg transform active:scale-95 transition cursor-pointer" id="canvasCTA">
-                                CLAIM 20% DISCOUNT
-                            </div>
-                            <span class="text-[9px] text-center text-indigo-200 tracking-wide block" id="canvasFooterLabel">MarketMate AI Verified Asset Layout</span>
-                        </div>
-                    </div>
+/* ── Strategy Hub ── */
+async function generateStrategy(){
+  const prompt = document.getElementById('strategyPrompt').value.trim();
+  if(!prompt){ showToast('Enter a strategy question first!'); return; }
+  const btn = document.getElementById('strategyBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Analyzing...';
+  const out = document.getElementById('strategyOutput');
+  out.innerHTML = '<span class="typing-cursor">Analyzing your brand strategy</span>';
+  document.getElementById('strategyActions').style.display = 'none';
 
-                    <div class="flex items-center justify-center gap-3 max-w-[380px] mx-auto">
-                        <button onclick="downloadFlyerAsset()" class="flex-1 border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold py-2.5 rounded-xl bg-white transition flex items-center justify-center gap-2 shadow-sm">
-                            📥 Export PNG Layer
-                        </button>
-                        <button onclick="vaultFlyerAsset()" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold py-2.5 rounded-xl transition flex items-center justify-center gap-2 shadow-sm">
-                            ❤️ Save Blueprint
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </section>
+  const system = `You are the MarketMate AI Intelligence Hub — a senior marketing strategist, brand consultant, and growth advisor. ${buildBrandContext()} Provide specific, actionable, and data-driven marketing strategy advice. Use clear structure with numbered points or bullet points. Be direct, insightful, and commercially minded.`;
+  const result = await callClaude([{role:'user',content:prompt}], system);
+  currentStratOutput = result;
+  out.textContent = result;
+  document.getElementById('strategyActions').style.display = 'flex';
+  btn.disabled = false;
+  btn.innerHTML = '<i class="ti ti-brain"></i>Analyze';
+}
 
+function copyStratOut(){ if(currentStratOutput){ navigator.clipboard?.writeText(currentStratOutput); showToast('Copied!'); } }
+function vaultStratOut(){
+  if(!currentStratOutput) return;
+  vault.unshift({text:currentStratOutput,type:'Strategy Insight',date:new Date().toLocaleDateString(),id:Date.now()});
+  document.getElementById('statAssets').textContent = vault.length;
+  showToast('Insight saved to vault!');
+}
 
-        <section id="view-assistant" class="tab-view space-y-6 hidden">
-            <div class="bg-white rounded-xl border border-gray-100 p-6 shadow-sm space-y-6">
-                <div>
-                    <h3 class="font-bold text-gray-800 text-lg">AI Brand Matrix Strategist</h3>
-                    <p class="text-xs text-gray-400">Deep-dive optimization frameworks aligned explicitly with your tracked business profile parameters.</p>
-                </div>
+/* ── Design Studio ── */
+function generateDesign(){
+  const headline = document.getElementById('designHeadline').value || 'Your Brand Event';
+  const sub = document.getElementById('designSubtext').value || 'Join us for something special';
+  const cta = document.getElementById('designCta').value || 'Learn More';
+  const template = document.getElementById('designTemplate').value;
+  const themeName = document.getElementById('designTheme').value;
+  const btn = document.getElementById('designGenBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Generating...';
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="strategyCardGrid">
-                    <div class="border border-gray-100 rounded-xl p-4 bg-gray-50/50 space-y-2">
-                        <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider block">Growth Vectors</span>
-                        <h4 class="font-semibold text-gray-800 text-sm">Automated Micro-Influencer Funnels</h4>
-                        <p class="text-xs text-gray-500 leading-relaxed">Leverage micro-audiences in the niche space by sending dynamic invitation packs matching your chosen voice tone profile.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+  const t = THEMES[themeName] || THEMES['Brand Purple'];
+  const canvas = document.getElementById('designCanvas');
+  canvas.innerHTML = `
+    <div class="design-preview" style="background:${t.bg};color:${t.text};width:100%">
+      <div class="dp-eyebrow" style="color:${t.accent}">${template.toUpperCase()} · ${brand.name||'YOUR BRAND'}</div>
+      <div class="dp-title" style="color:${t.text}">${headline}</div>
+      <div class="dp-sub" style="color:${t.text}">${sub}</div>
+      <button class="dp-cta" style="background:${t.accent};color:#fff">${cta}</button>
+      <div class="dp-badge" style="color:${t.text}">MarketMate AI · Verified Asset</div>
+    </div>`;
 
+  document.getElementById('designActions').style.display = 'flex';
+  btn.disabled = false; btn.innerHTML = '<i class="ti ti-wand"></i>Generate Design';
+  showToast('Design generated!');
+}
 
-        <section id="view-calendar" class="tab-view space-y-6 hidden">
-            <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div>
-                        <h3 class="font-bold text-gray-800 text-lg">Omni-Channel Content Calendar</h3>
-                        <p class="text-xs text-gray-400">Map execution deadlines and schedule generative content packages chronologically.</p>
-                    </div>
-                </div>
+function saveDesign(){
+  const h = document.getElementById('designHeadline').value || 'Untitled';
+  vault.unshift({text:`Design: "${h}" — ${document.getElementById('designTemplate').value} (${document.getElementById('designTheme').value})`,type:'Design Blueprint',date:new Date().toLocaleDateString(),id:Date.now()});
+  document.getElementById('statAssets').textContent = vault.length;
+  showToast('Blueprint saved to vault!');
+}
 
-                <div class="border border-gray-100 rounded-xl overflow-hidden">
-                    <div class="grid grid-cols-7 bg-gray-50 text-center py-2 text-xs font-bold uppercase tracking-wider text-gray-500 border-b border-gray-100">
-                        <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-                    </div>
-                    <div class="grid grid-cols-7 grid-rows-5 h-80 md:h-[420px] bg-white divide-x divide-y divide-gray-100" id="calendarDaysGrid"></div>
-                </div>
-            </div>
-        </section>
+/* ── Vault ── */
+function renderVault(){
+  const vl = document.getElementById('vaultList');
+  const vh = document.getElementById('homeVaultPreview');
+  const empty = `<div class="empty-state"><i class="ti ti-inbox"></i><p>Your vault is empty. Generate content to fill it up.</p></div>`;
+  if(!vault.length){ if(vl) vl.innerHTML = empty; if(vh) vh.innerHTML = empty; return; }
+  const html = vault.slice(0,10).map(item=>`
+    <div class="vault-item">
+      <div style="flex:1;min-width:0">
+        <div class="vi-text">${item.text.substring(0,140)}${item.text.length>140?'...':''}</div>
+        <div class="vi-meta">${item.type} · ${item.date}</div>
+      </div>
+      <div class="vi-actions">
+        <button class="icon-btn" onclick="copyVaultItem(${item.id})" title="Copy"><i class="ti ti-copy"></i></button>
+        <button class="icon-btn" onclick="deleteVaultItem(${item.id})" title="Delete"><i class="ti ti-trash"></i></button>
+      </div>
+    </div>`).join('');
+  if(vl) vl.innerHTML = html;
+  if(vh) vh.innerHTML = vault.length > 0 ? html : empty;
+}
 
+function copyVaultItem(id){ const item = vault.find(v=>v.id===id); if(item){ navigator.clipboard?.writeText(item.text); showToast('Copied!'); } }
+function deleteVaultItem(id){ vault = vault.filter(v=>v.id!==id); document.getElementById('statAssets').textContent = vault.length; renderVault(); showToast('Removed from vault'); }
 
-        <section id="view-brandkit" class="tab-view space-y-6 hidden">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">🎨 Palette Archetypes</h4>
-                    <div class="space-y-2.5" id="kitColorContainer"></div>
-                </div>
+/* ── Calendar ── */
+function switchCal(v){
+  calViewMode = v;
+  document.getElementById('calMonthBtn').className = 'tab-btn'+(v==='month'?' active':'');
+  document.getElementById('calWeekBtn').className = 'tab-btn'+(v==='week'?' active':'');
+  renderCalendar();
+}
 
-                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">🔤 Typography Pairings</h4>
-                    <div class="p-4 border border-gray-50 rounded-xl space-y-3 bg-gray-50/30">
-                        <div>
-                            <span class="text-[10px] text-gray-400 font-bold uppercase block mb-1">Primary Display Header</span>
-                            <p class="text-xl font-bold text-gray-900" id="kitFontHeader">Plus Jakarta Sans</p>
-                        </div>
-                    </div>
-                </div>
+function renderCalendar(){
+  const el = document.getElementById('calView'); if(!el) return;
+  const now = new Date(); const year = now.getFullYear(); const month = now.getMonth();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-                <div class="bg-white rounded-xl border border-gray-100 p-5 shadow-sm space-y-4">
-                    <h4 class="font-bold text-sm text-gray-800 flex items-center gap-2">💬 Voice Tone Constraints</h4>
-                    <div class="space-y-2" id="kitVoiceContainer"></div>
-                </div>
-            </div>
-        </section>
+  if(calViewMode === 'month'){
+    const first = new Date(year,month,1).getDay();
+    const last = new Date(year,month+1,0).getDate();
+    let html = `<div style="font-size:.85rem;font-weight:700;margin-bottom:.75rem;color:var(--mm-accent2)">${monthNames[month]} ${year}</div>`;
+    html += `<div class="cal-grid">${days.map(d=>`<div class="cal-head">${d}</div>`).join('')}`;
+    for(let i=0;i<first;i++) html += `<div class="cal-day empty"></div>`;
+    for(let d=1;d<=last;d++){
+      const hasEv = calEvents.some(e=>{ const dt=new Date(e.date); return dt.getDate()===d&&dt.getMonth()===month&&dt.getFullYear()===year; });
+      const isToday = d===now.getDate();
+      html += `<div class="cal-day${isToday?' today':''}${hasEv?' has-event':''}">${d}</div>`;
+    }
+    html += '</div>';
+    el.innerHTML = html;
+  } else {
+    const ws = new Date(now); ws.setDate(now.getDate()-now.getDay());
+    let html = `<div class="cal-grid">`;
+    for(let i=0;i<7;i++){
+      const dt = new Date(ws); dt.setDate(ws.getDate()+i);
+      const isToday = dt.toDateString()===now.toDateString();
+      const hasEv = calEvents.some(e=>new Date(e.date).toDateString()===dt.toDateString());
+      html += `<div class="cal-day${isToday?' today':''}${hasEv?' has-event':''}" style="min-height:70px;padding:.5rem .25rem;justify-content:flex-start;flex-direction:column;gap:.15rem"><div style="font-size:.65rem;color:var(--mm-muted)">${days[i]}</div><div style="font-size:.9rem;font-weight:700">${dt.getDate()}</div></div>`;
+    }
+    html += '</div>';
+    el.innerHTML = html;
+  }
 
-    </main>
+  const evList = document.getElementById('calEventsList');
+  if(evList){
+    if(!calEvents.length){ evList.innerHTML='<p style="font-size:.78rem;color:var(--mm-muted);padding:.5rem 0">No events scheduled yet.</p>'; return; }
+    evList.innerHTML = '<div style="font-size:.78rem;font-weight:600;color:var(--mm-muted);margin-bottom:.5rem">Scheduled Events</div>'
+      + calEvents.map(e=>`<div class="vault-item" style="margin-bottom:.5rem"><div style="flex:1"><div class="vi-text">${e.note}</div><div class="vi-meta">${e.date} · ${e.platform}</div></div><div class="vi-actions"><button class="icon-btn" onclick="deleteCalEvent(${e.id})" title="Remove"><i class="ti ti-trash"></i></button></div></div>`).join('');
+  }
+}
 
-    <script src="app.js"></script>
+function addCalEvent(){
+  const date = document.getElementById('calDate').value;
+  const note = document.getElementById('calNote').value.trim();
+  const platform = document.getElementById('calPlatform').value;
+  if(!date||!note){ showToast('Add a date and campaign note!'); return; }
+  calEvents.push({date,note,platform,id:Date.now()});
+  document.getElementById('statCampaigns').textContent = calEvents.length;
+  document.getElementById('calDate').value = '';
+  document.getElementById('calNote').value = '';
+  renderCalendar(); showToast('Event added to calendar!');
+}
+
+function deleteCalEvent(id){ calEvents = calEvents.filter(e=>e.id!==id); document.getElementById('statCampaigns').textContent=calEvents.length; renderCalendar(); }
+
+/* ── Brand Kit ── */
+function renderBrandKit(){
+  const bc = document.getElementById('brandKitContent');
+  if(bc){
+    if(brand.name){
+      bc.innerHTML = `<div style="display:grid;gap:.55rem">
+        ${[['Business Name',brand.name],['Industry',brand.industry||'Not set'],['Target Audience',brand.audience||'Not set'],['Business Description',brand.description||'Not set'],['Unique Value Proposition',brand.uvp||'Not set'],['Brand Tone',brand.tone||'Not set'],['Primary Goal',brand.goal||'Not set']].map(([l,v])=>`
+          <div class="vault-item"><div><div class="vi-meta">${l}</div><div class="vi-text">${v}</div></div></div>`).join('')}
+      </div>`;
+    } else {
+      bc.innerHTML = `<p style="font-size:.82rem;color:var(--mm-muted)">Complete brand setup to populate your Brand Kit.</p><button class="btn btn-primary btn-sm" style="margin-top:.75rem" onclick="showOnboard()">Setup Brand →</button>`;
+    }
+  }
+  const pr = document.getElementById('paletteRow');
+  if(pr) pr.innerHTML = PALETTES.map((pal,pi)=>`
+    <div class="pal-option${pi===selectedPaletteIdx?' active':''}" onclick="selectPalette(${pi})" title="Palette ${pi+1}">
+      ${pal.map(c=>`<div class="pal-swatch" style="background:${c}"></div>`).join('')}
+    </div>`).join('');
+  const tc = document.getElementById('toneChips');
+  if(tc) tc.innerHTML = TONES.map(t=>`<div class="tone-chip${brand.tone===t?' active':''}" onclick="selectBrandTone(this,'${t}')">${t}</div>`).join('');
+}
+
+function selectPalette(i){ selectedPaletteIdx=i; renderBrandKit(); }
+function applyPalette(){ showToast('Palette applied to brand profile!'); }
+function selectBrandTone(el,t){ document.querySelectorAll('.tone-chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); brand.tone=t; showToast(`Tone set: ${t}`); }
+
+/* ── Utilities ── */
+function updateDailyTip(){
+  const el = document.getElementById('dailyTip');
+  if(el) el.textContent = DAILY_TIPS[new Date().getDay() % DAILY_TIPS.length];
+}
+
+function showToast(msg){
+  const t = document.createElement('div'); t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2600);
+}
+
+/* ── Init ── */
+buildStep();
+updateDailyTip();
+renderVault();
+document.getElementById('calDate').value = new Date().toISOString().split('T')[0];
+</script>
 </body>
-</html> 
+</html>
